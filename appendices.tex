@@ -1,0 +1,50 @@
+\chapter{Appendices}
+
+\section{Elasticsearch Query}
+\begin{lstlisting}[language=json, caption={Initial query to retrive query expansion data}, label={ap:initial-query}]
+{
+    query : {
+        terms : {
+          tags : [...]
+        }
+    },
+    size: 50,
+    aggregations : {
+        terms: {
+            terms : {
+                field : "tags.keyword",
+                size: 50
+            }
+        },
+        term_count: {
+            value_count: {
+                field: "tags.keyword"
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=json, caption={Elasticsearch term search}, label={ap:final-query}]
+{
+    query : {
+        terms : {
+          tags : [...]
+        }
+    }
+}
+\end{lstlisting}
+
+\section{Flickr Data Representation in Elasticsearch}
+\begin{lstlisting}[language={json}, caption={Internal photo data representation in elasticsearch}, label={ap:flickr-data}]
+{
+    id: id,
+    title: "title",
+    description: "description",
+    tags: [
+      "blue",
+      "sky"
+    ]
+    ...
+}
+\end{lstlisting}
