@@ -1,5 +1,10 @@
 \chapter{Background}
 \label{ch:background}
+This chapter presents basic theory and techniques behind search engines. First
+the technologies used in the implementation are explained, and then followed by a
+detailed description on how the documents are scored inside the search engine from a
+query. Finally, relevance feedback is described as well as how it may be used in an query
+expansion.
 
 \section{Open Source Search Engine Solutions}
 Google\footnote{\url{https://www.google.com}} and Bing\footnote{\url{https://www.bing.com/}}
@@ -13,35 +18,7 @@ Some of the search engines contains query expansion implementations,
 but they are limited to synonyms expansion.
 None of the open source databases deliver personalized search capabilities.
 
-\section{Technology}
-
-\subsection{Lucene}
-
-\subsection{Elasticsearch}
-
-\section{Search Engine}
-
-\subsection{Term Frequency}
-
-\subsection{Inverse Document Frequency}
-
-\subsection{Document Normalization}
-
-\subsection{Document Score}
-\label{sec:doc-score}
-
-\subsection{Multiple Term Query}
-
-\section{Relevance Feedback}
-
-\subsection{Explicit vs Implicit Feedback}
-
-\subsection{Pseudo-Relevance Feedback}
-
-\section{Query Expansion}
-\label{sec:query-expansion}
-
-[Kullback-Leibler Divergence]
-
-
-[Kullback-Leibler Divergence Example]
+\input{background/technology}
+\input{background/search-engine}
+\input{background/relevance-feedback}
+\input{background/query-expansion}

@@ -1,0 +1,41 @@
+\section{Relevance Feedback}
+The idea behind \textit{relevance feedback} is to use the result from the initial query to extract relevant information from the top-k documents.
+Once the information is extracted, a new query is executed with extracted information.
+Results from the second query are sent back to the user.
+The assumption is that the second query returns documents which are more relevant to the user.
+
+In \cite{ir-book} the authors define \textit{relevance feedback} as: "when the user explicitly provides information on relevant documents to a query,"
+and \textit{query expansion} as: "when information related to the query is used to expand it" \cite[p. 177]{ir-book}.
+In other words to use \textit{relevance feedback}, input from the user is needed.
+For example the user could be given the task to mark whether the documents are relevant or not.
+In practice it is often difficult for a user to determine the results relevance.
+For \textit{query expansion} information like position and tags may be used to expand the query.
+A more detailed explanation of query expansion is described in section \ref{sec:query-expansion}.
+
+\textit{Relevance feedback} is divided into three main categories \textit{explicit feedback}, \textit{implicit feedback} and \textit{pseude-relevance feedback},
+and is introduced in the next two subsections.
+
+\subsection{Explicit vs Implicit Feedback}
+\textit{Explicit feedback} data are retrieved directly from user interaction.
+An example would be if the user selects the section "graphic cards" in an online store.
+Then you know that the user wants a graphic card, but this is not applicable in all type of searches
+Another approach is to use data from a user search.
+If a user clicks on a search result, the result may be regarded as relevant.
+Even though the result may not be relevant, it is a good indication.
+The problem with explicit feedback, is that it requires interaction from the user.
+
+\textit{Implicit feedback} on the other hand, does not require any involvement from the user.
+Examples of implicit user data are:
+collecting the documents from a search result that  are opened by a user,
+and measure time spent viewing a document.
+
+\subsection{Pseudo-Relevance Feedback}
+Retrieval of data to use relevance feedback requires either explicit or implicit user interaction.
+Manually involving the user in the search is undesireable.
+To avoid this an approach called pseudo-relevance feedback can be used.
+Using implicit feedback requires a system which does the data collection and post process the information.
+Pseudo-relevance on the other hand, uses information from the first search, and thus leads to a simpler implementation.
+
+Often the top-k documents are used to find pseudo-relevance for query expansion.
+However, the top-k documents are in many cases not relevant, and thus not suitable data for query expansion \cite{pseudo-relevance-invalid}.
+Section \ref{sec:query-expansion} describes a method to extract information from the top-k documents which is regarded as relevant information.

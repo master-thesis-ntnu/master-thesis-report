@@ -1,0 +1,100 @@
+\section{Search Engine}
+A common approach for search engines is to use \textit{term frequency} (TF) and \textit{inverse document frequency} (IDF) to calculate a document\'s relevance based on a query.
+Documents with the highest TF from a query are believed to be the most relevant.
+On the other hand, the most common words are removed as they do not contain information about the topic.
+TF and IDF alone is a simple model, and Elasticsearch uses a more sophisticated model.
+Elasticsearch's document scoring model is described in the following subsections.
+This section describes how Elasticsearch scores its documents and is based on the documentation found on the website \cite{elasticsearch-scoring}.
+
+\subsection{Term Frequency}
+Term frequency is the number of times a term is mentioned in a document.
+A document containing a term multiple times is probably more relevant than a document containing fewer occurences.
+However, in this work a term is only present one time in each document, and the reason is described in greater detail in Chapter \ref{ch:approach}.
+Term frequency calculation is given by Equation \ref{eq:term-frequency}.
+
+\begin{cequation}[H]
+	\begin{equation}
+		\mathbf{tf} = \sqrt{frequency}
+	\end{equation}
+	\caption{Term frequency calculation in Elasticsearch.}
+  \label{eq:term-frequency}
+\end{cequation}
+
+\subsection{Inverse Document Frequency}
+Inverse document frequency describes how many times a term is present in all the documents.
+Terms with high frequencies are often less relevant.
+E.g. the terms "a" and "an" often appears in a sentence but should not be given a high score even though they appear numerous times.
+\begin{cequation}[H]
+	\begin{equation}
+		\mathbf{idf} = 1 + \log{[\frac{numDocs}{docFrequency + 1}]}
+	\end{equation}
+	\caption{Inverse Document Frequency calculation in Elasticsearch.}
+  \label{eq:idf}
+\end{cequation}
+
+\subsection{Document Normalization}
+A title field is likely to be shorter compared to a description field.
+As a result, the description field possibly contains more instances of a given term.
+To account for longer fields document normalization is used.
+Elasticsearch's implementation is illustrated in equation \ref{eq:normalization}.
+
+\begin{cequation}[H]
+	\begin{equation}
+		\mathbf{normalization} = \frac{1}{\sqrt{numTerms}}
+	\end{equation}
+	\caption{Normalization.}
+  \label{eq:normalization}
+\end{cequation}
+
+\subsection{Document Score}
+\label{sec:doc-score}
+After calculating term frequency, inverse document frequency and document normalization all the factors are multiplied together.
+A documents score in Elasticsearch is given by the Equation \ref{eq:document-score}.
+
+\begin{cequation}[H]
+	\begin{equation}
+		\mathbf{documentScore} = tf \times idf \times normalization
+	\end{equation}
+	\caption{Final document score.}
+  \label{eq:document-score}
+\end{cequation}
+
+\subsection{Multiple Term Query}
+The document score function described in Section \ref{sec:doc-score} is only used when searching for a single term.
+While a term query containing multiple terms requires a combination of techniques.
+A multiple term query inside Lucene combines the following techniques:
+boolean model, TF/IDF and vector space model.
+Equation \ref{eq:scoring-function} shows how each document are scored against a multiterm query.
+Table \ref{tbl:scoring-function} explaines each variable in equation \ref{eq:scoring-function}.
+A more in depth explanation is available at Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoring-function.html}}.
+
+\begin{cequation}
+	\begin{equation}
+		\begin{aligned}
+			\mathbf{score(q,d)} = & coord(q,d) \times queryNorm(q) \\
+														& \times \sum tf(t in d) \times idf(t)^2 \times t.getBoost() \times norm(t,d)
+		\end{aligned}
+	\end{equation}
+	\caption{Equation for scoring documents when searching with multiple terms. Each variable is described in table \ref{tbl:scoring-function}.}
+  \label{eq:scoring-function}
+\end{cequation}
+
+\begin{table}
+		\centering
+    \begin{tabular}{|l|l|}
+    \hline
+		\multicolumn{1}{|c|}{\bfseries Variable} & \multicolumn{1}{c|}{\bfseries Description} \\ \hline
+    \textit{t}         & term                           		\\ \hline
+    \textit{d}         & document                       		\\ \hline
+    \textit{q}         & query                          		\\ \hline
+		\textit{score}     & document score from a given query	\\ \hline
+    \textit{coord}     & coordination factor            		\\ \hline
+    \textit{queryNorm} & query normalization factor     		\\ \hline
+    \textit{tf}        & term frequency                 		\\ \hline
+    \textit{idf}       & inverse document frequency     		\\ \hline
+    \textit{getBoost}  & boost factor used on the query 		\\ \hline
+    \textit{norm}      & document normalization factor  		\\ \hline
+    \end{tabular}
+		\caption{Variable descriptions for equation \ref{eq:scoring-function}.}
+		\label{tbl:scoring-function}
+\end{table}
