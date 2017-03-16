@@ -2,59 +2,8 @@
 \label{ch:introduction}
 This chapters starts with a section about motivation of the work done in the project report,
 and the problem specification is arrived from the motivation.
-Then the structure of the report is outlined.
+Then the structure of the report is outlined
 
-\section{Motivation}
-Search engines today strives to deliver fast and relevant search results.
-Most users may quickly notice whether the search results are relevant or not.
-A second important factor for interactive tasks is speed.
-Interactive services have a requirement to deliver results within 100ms \cite{google-latency}.
-
-Today an increasing number of software companies try to personalize their services.
-A few examples of personalized services are Facebook's News Feed\footnote{\url{https://newsroom.fb.com/news/category/news-feed-fyi/}},
-Netfix's movie suggestion \cite{netflix-recommendation} and Spotify's Discover Weekly\footnote{\url{https://community.spotify.com/t5/Spotify-Community-Blog/On-Track-Discover-Weekly/ba-p/1456790}}.
-
-High latency may lead to users abandoning your site and revenue is easily lost.
-Returning results fast is more important compared to the number of results returned.
-While conducting latency experiments, Google found that an increased latency of 0.5 seconds, leads to 20\% less traffic \cite{google-marissa}.
-
-This master thesis builds on and extends the work done by Juul Arthur R Rudihagen \cite{master-thesis}.
-Rudihagen researched how an instant personalized search could be achieved.
-The research achieved a personalized search which returned results of higher relevance to the user.
-However, the results from the work showed that the implemented method did not meet the requirement of interactivity \cite{master-thesis}.
-
-Furthermore, this report examines how a fast and scalable search may be achieved, using the research done by Rudihagen as a baseline.
-His search implementations had limits both in latency and scalability.
-A major part of the latency in Rudihagen's report originated from multiple round trips from the web server to the database and the search engine.
-
-[??]This should be somewhere in motivation.
-Google\footnote{\url{https://www.google.com}} and Bing\footnote{\url{https://www.bing.com/}}
-were the two largest search engines in 2016\footnote{\url{https://www.netmarketshare.com/search-engine-market-share.aspx?qprid=4&qpcustomd=0&qpstick=0&qpsp=2016&qpnp=1&qptimeframe=Y}},
-according to NetMarketShare.
-However, neither Google and Bing are open source.
-
-In this report we will look at how the latency may be reduced and scalability increased,
-and based on Rudihagen's work this report have derived the research questions in the next section.
-
-\section{Problem Specification}
-\label{sec:problem-specification}
-This project report tries to answer the following research questions, with the main focus being research question \ref{rq:scaling} and \ref{rq:latency}.
-
-\begin{enumerate}
-  %\item How to provide instant personalized recommendations on a cold start based on the query typed?
-  \item How to achieve more relevant search results based on a query from a user?
-  \item\label{rq:scaling} How to make the search recommandation scale with an increasing amount of data?
-  \item\label{rq:latency} How to develop a search recommendation method that fulfills the interactive requirements?
-\end{enumerate}
-
-\section{Structure}
-The project report consists of 5 chapters: Background, Related Work, Approach, Evaluation and a Conclusion.
-The \hyperref[ch:background]{Background} chapter introduces theories on search engines,
-query expansion and the technology and method used for testing the implementation.
-The chapter \hyperref[ch:related-work]{Related Work} describes related reasearch on methods to improve result relevance.
-The master thesis this project report is based on is also introduced.
-The chapter \hyperref[ch:approach]{Approach} describes the implemented query expansion and how the web server was configured.
-Next, the chapter \hyperref[ch:evaluation]{Evaluation} outlines how the experiments were conducted and the results from the experiments.
-The last section discusses the results and makes a comparison with the work by Rudihagen \cite{master-thesis}.
-Lastly, the \hyperref[ch:conclusion]{Conclusion} chapter gives a brief summary of the results and the implementation.
-The last section suggests further work that, if implemented , will improve the current implementation.
+\input{introduction/motivation}
+\input{introduction/problem-specification}
+\input{introduction/structure}
