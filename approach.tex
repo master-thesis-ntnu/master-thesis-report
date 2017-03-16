@@ -8,7 +8,8 @@ The first implementation utilizes Lucene directly.
 However, Lucene alone is not scalable.
 
 \subsection{Lucene Architecture}
-The Lucene implementation
+Most search engines strives to hold the data in memory.
+To achieve the performance desired by Lucene the whole index is kept in memory.
 
 \begin{figure}[h!]
 \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}
