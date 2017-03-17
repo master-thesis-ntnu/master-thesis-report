@@ -11,6 +11,9 @@ However, Lucene alone is not scalable.
 Most search engines strives to hold the data in memory.
 To achieve the performance desired by Lucene the whole index is kept in memory.
 
+The tag field is stored with information about document frequency for each term.
+The document frequency is required to calculate the KL score for each term.
+
 \begin{figure}[h!]
 \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}
 \caption{Sequence diagram for the Lucene implementation.}

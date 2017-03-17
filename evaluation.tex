@@ -3,6 +3,13 @@
 
 \section{Experimental Setup}
 
+\subsection{Lucene Experiment}
+The Lucene experiments starts to build the index with all the photo data.
+To make the experiment simpler only the fields: tags, title and url are stored.
+
+\subsection{Elasticsearch Experiment}
+The Elasticsearch experimental setup contains two main components, the node server and the Elasticsearch server.
+
 \subsection{Data Set}
 \label{sec:dataset}
 
@@ -10,6 +17,10 @@
 
 \section{Results}
 \label{sec:results}
+The results from the experiments in the project report [??],
+showed that the query expansion implementation had about 2 times longer latency compared to the baseline implementation.
+The latency were measured from the request left the user to the response from the server arrived.
+
 
 \subsection{Lucene Results}
 About 50\% increased latency with the Lucene implementation.
