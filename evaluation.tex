@@ -21,6 +21,8 @@ The results from the experiments in the project report [??],
 showed that the query expansion implementation had about 2 times longer latency compared to the baseline implementation.
 The latency were measured from the request left the user to the response from the server arrived.
 
+All the results show that the first request is often the slowest.
+After the initial request the respons is cached by Lucene and makes all the subsequent requests a lot faster.
 
 \subsection{Lucene Results}
 About 50\% increased latency with the Lucene implementation.
