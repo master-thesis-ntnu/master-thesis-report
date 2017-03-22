@@ -1,7 +1,14 @@
 \chapter{Approach}
 \label{ch:approach}
 The initial implementation described in the project report [??] were implemented on a server backend.
-This approach re
+This approach showed promising results, with two roundtrips between the webserver and the search engine.
+The measured latencies was well within the limit of 100 ms.
+However, the roundtrip time was a large part of the latency and the setup was done in an environment with minimal latency.
+
+The project report had two different implementations, one without query expansion and one with query expansion.
+The implementation without query expansion is used as a baseline.
+The query expansion implementation had a latency increase of about 2 times compared the baseline implementation.
+In a real world environment the increased latency may exceed the 100 ms interactive requirement.
 
 \section{Architecture}
 The first implementation utilizes Lucene directly.
@@ -26,6 +33,8 @@ Minimal Java optimizations
 Architecture with Elasticsearch.
 
 Elasticsearch plugin to extend the Elasticsearch API.
+
+Elasticsearch plugin functionality
 
 \section{Query Expansion Implementation}
 Algorithm explanation.
