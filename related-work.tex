@@ -4,11 +4,57 @@
 \section{Related Work}
 
 \subsection{Instant Personalized Search Recommandation}
+As mentioned, this project report builds on and extends the work by Rudihagen \cite{master-thesis}.
+His reseach focused on personalizing app recommandations to achieve better recommandations compared to returning the most popular results (popular meaning most downloaded).
+The implemented recommandation engine returned promising results, but had a few shortcommings in terms of latency, scalability and test data size.
+
+\begin{itemize}
+  \item The implemented solution experienced a latency of up to 600 ms with some queries.
+  \item Each user had their own index in Elasticsearch, which does not scale well.
+  \item The data set contained data from 46 different users.
+\end{itemize}
+
+This project report aims at exploring the possibility to reduce the search latency to less than 100 ms mark, and how to structure data to scale better.
+Based on the work by Rudihagen,
+the implementation explained in chapter \ref{ch:approach} assumes that pseudo-relevance feedback returns relevant results.
 
 \subsection{Pseudo-Relevance Feedback Based on Wikipedia}
+Pseudo-relevance feedback uses information from the top-k documents to compute query expansion terms.
+However, the top-k documents are not always relevant and may introduce noise to the data set.
+
+\textit{Query Dependent Pseudo-Relevance Feedback based on Wikipedia} explores query dependent expansion on data from Wikipedia.
+In the paper they found that different field weights had a significant impact on the precision performance.
+From the results they found high weights on the fields, "Links" and "Content" to yield very good results.
+Increasing the weights on the "Overview" field decreased precision results.
+The research explored three different methods for query expansion:
+relevance model, strategy for entity/ambiguous queries and field evidence for query expansion \cite{pseudo-relevance-wikipedia}.
 
 \section{Other Work}
 
 \subsection{Fuzzy Search}
+With a standard term search, the user has to spell the term correctly as a misspelled term will most likely yield no or few results.
+E.g the term "sceinci" should also retrieve results on the term "science."
+There are two character edits required to retrieve the correct term "science."
+First, switch the two characters "c" and "e" to achieve "scienci."
+Secondly, change the character "i" to "e" to acquire the term "science."
+
+A study found that 50\% of users reformulate their queries, and close to a third of these users reformulated their query three times or more \cite{query-reformulate}.
+To handle this problem a technique called fuzzy search may be used \cite{fuzzy-search}.
+
+A commonly used method with fuzzy search is Levenshtein distance.
+Levenshtein distance calculates the number of characters edits which are required to transform one string into another.
+Editing a string includes substitution, insertion and deletion.
+Levenshtein distance can be expanded with the method Damerau to allow character transposition.
+
+Elasticsearch uses Damerau-Levenshtein distance to calculate edit distance\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/fuzziness.html}}.
+The Damerau-Levenshtein distance corresponds to the number of character edits.
+A distance of 1, means one character has to be changed.
 
 \subsection{Twitter Query Suggestion Engine}
+\textit{Fast Data in the Era of Big Data: Twitter\'s Real-Time Related Query Suggestion Architecture} is a paper that describes the architecture behind Twitter's suggestion engine \cite{twitter-suggestion}.
+One of the most important requirements for Twitter was to provide relevant search results within minutes of an event taking place.
+More precicly they wanted to register trending hashtags within 10 minutes of an event happening, and deliver the results in real-time.
+
+The search assistance engine have multiple features to aid the users while searching.
+Temporal information are searched to deliver information which have been popular the last day, and popular information aggregated over time.
+Secondly they have a spelling correction system, which suggest corrections for common misspelled queries.
