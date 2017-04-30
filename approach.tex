@@ -10,9 +10,27 @@ The implementation without query expansion is used as a baseline.
 The query expansion implementation had a latency increase of about 2 times compared the baseline implementation.
 In a real world environment the increased latency may exceed the 100 ms interactive requirement.
 
-\section{Architecture}
-The first implementation utilizes Lucene directly.
-However, Lucene alone is not scalable.
+\section{Implementation}
+Two different platforms were used during the implementation.
+The initial implementation used Lucene as the search engine.
+
+\section{Algorithm}
+\begin{algorithm}[H]
+ \KwData{Search terms}
+ \KwResult{Query expanded search result}
+ initialization\;
+
+ \for{not at end of this document}{
+  read current\;
+  \eIf{understand}{
+   go to next section\;
+   current section becomes this one\;
+   }{
+   go back to the beginning of current section\;
+  }
+ }
+ \caption{Lucene Algorithm Implementation}
+\end{algorithm}
 
 \subsection{Lucene Architecture}
 Most search engines strives to hold the data in memory.
@@ -22,6 +40,9 @@ The tag field is stored with information about document frequency for each term.
 The document frequency is required to calculate the KL score for each term.
 
 Minimal Java optimizations
+
+Even though the Lucen implementation delivered promising results, Lucene in itself is not scalable.
+As one of the research questions
 
 \begin{figure}[h!]
 \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}
@@ -44,6 +65,7 @@ These plugins are develop by the community.
 
 The implementation decribed in this report belongs to the community contributed plugins.
 
+The implemented plugin extends the current Elasticsearch REST API.
 
 Architecture with Elasticsearch.
 
@@ -60,4 +82,4 @@ Elasticsearch plugin functionality
 \section{Query Expansion Implementation}
 Algorithm explanation.
 
-\section{NodeJS Configuration}
+\section{Web Server}
