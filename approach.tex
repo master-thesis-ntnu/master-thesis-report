@@ -15,21 +15,44 @@ Two different platforms were used during the implementation.
 The initial implementation used Lucene as the search engine.
 
 \section{Algorithm}
-\begin{algorithm}[H]
- \KwData{Search terms}
- \KwResult{Query expanded search result}
- initialization\;
+[Write introduction pharagraph]
 
- \for{not at end of this document}{
-  read current\;
-  \eIf{understand}{
-   go to next section\;
-   current section becomes this one\;
-   }{
-   go back to the beginning of current section\;
-  }
- }
- \caption{Lucene Algorithm Implementation}
+Initially the terms search is sent to the search engine.
+The initial search is often called the top-k documents
+The photos from the result are then looped through to extract all the tags.
+Each tag is stored in an hash map for fast retrieval later.
+All the tags are stored together with information about how many occurences each tag have in the top-k documents,
+how many terms there are in total in the top-k documents,
+how many times the tag appears in the collection,
+and how many terms there are in total in the collection.
+
+The information about how many times a tag appears in the collection are retrieved from the search engine.
+The number of search engine accesses depends on the number of unique tags in the top-k documents.
+
+After each
+
+
+\begin{algorithm}
+  \begin{algorithmic}
+    \Require{Search terms from the user is defined as $searchTerms$}
+    \State $initialSearchResult \gets \Call{termsSearch}{searchTerms}$
+    \State $termsData \gets [ ]$
+    \State $sortedTerms \gets [ ]$
+
+    \For {$photos$ in $initialSearchResult$}
+      \For {$term$ in photos}
+        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+        \State \Call{insertTermsData}{term, numberOfTimesInCollection, numberOfTermsInCollection}
+      \EndFor
+    \EndFor
+    \For {$term$ in $termsData$}
+      \State $\Call{calulate}$
+      \Call{insertTerm}{sortedTerms, term}
+    \EndFor
+
+  \end{algorithmic}
+  \caption{Algorithm used in the Lucene implementation.}
 \end{algorithm}
 
 \subsection{Lucene Architecture}
