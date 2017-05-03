@@ -8,7 +8,26 @@ The Lucene experiments starts to build the index with all the photo data.
 To make the experiment simpler only the fields: tags, title and url are stored.
 
 \subsection{Elasticsearch Experiment}
-The Elasticsearch experimental setup contains two main components, the node server and the Elasticsearch server.
+The Elasticsearch experimental setup contains two main components, a web server and a search engine.
+The web server is implemented in NodeJS and the search engine used is Elasticsearch.
+
+As large applications ofter use cloud providers, the tests also needed to be conducted using cloud providers.
+The requirement set for the cloud provider was: need to be videly used, have servers in Europe and provide VPS services.
+Possible providers were: Amozon Web Services\footnote{\url{https://aws.amazon.com/}},
+Google Cloud Platform\footnote{\url{https://cloud.google.com/}} and Digital Ocean\footnote{\url{https://www.digitalocean.com/}}.
+Google Cloud Platform were chosen as the service provider, as you have more flexibility to choose between number of cores and the memory size,
+the author had both knowledge to the platform and they gave away free credits[?? Maybe give a better reason?].
+
+The test setup contained two Google Compute Engine instances.
+The instance running Elasticsearch had the following specifications: 2 vCPUs, 10 GB memory and 20 GB SSD.
+Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}} suggest that more memory are more impartant
+Set the heap size to half of the memory\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html  }}.
+
+Node JS
+4vCPUs, 4GB memory
+10 GB SSD
+
+location europe-west1-c
 
 \subsection{Data Set}
 \label{sec:dataset}
