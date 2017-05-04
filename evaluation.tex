@@ -18,9 +18,14 @@ Google Cloud Platform\footnote{\url{https://cloud.google.com/}} and Digital Ocea
 Google Cloud Platform were chosen as the service provider, as you have more flexibility to choose between number of cores and the memory size,
 the author had both knowledge to the platform and they gave away free credits[?? Maybe give a better reason?].
 
-The test setup contained two Google Compute Engine instances.
+Tests were conducted using two Google Compute Engine instances.
 The instance running Elasticsearch had the following specifications: 2 vCPUs, 10 GB memory and 20 GB SSD.
-Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}} suggest that more memory are more impartant
+Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}} suggest that memory will be the most important resource in most use cases.
+As a result more memory were chosen over the number of CPUs.
+An important setting in Elasticsearch is the heap memory usage.
+By default the heap memory size is set to 1 GB.
+The Elasticsearch heap size were set to 5 GB in the test environment.
+According to the Elasticsearch documentation
 Set the heap size to half of the memory\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html  }}.
 
 Node JS
