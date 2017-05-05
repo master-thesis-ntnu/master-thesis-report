@@ -2,6 +2,10 @@
 \label{ch:evaluation}
 
 \section{Experimental Setup}
+- Why are there two experiments.
+- Author discovered Elasticsearch's plugin API after implementing query expansion in lucene after looking into how to move the implementation into Elasticsearch.
+- Elasticsearch plugin API have very limited documentation.
+- Hard to implement.
 
 \subsection{Lucene Experiment}
 The Lucene experiments starts to build the index with all the photo data.
@@ -17,22 +21,38 @@ Possible providers were: Amozon Web Services\footnote{\url{https://aws.amazon.co
 Google Cloud Platform\footnote{\url{https://cloud.google.com/}} and Digital Ocean\footnote{\url{https://www.digitalocean.com/}}.
 Google Cloud Platform were chosen as the service provider, as you have more flexibility to choose between number of cores and the memory size,
 the author had both knowledge to the platform and they gave away free credits[?? Maybe give a better reason?].
-
 Tests were conducted using two Google Compute Engine instances.
+Web services always strives to place the servers as close to the users as possible.
+To make the experiment simulate a real world scenario both the instances were placed in the reagion called \textit{europe-west1-c}.
+
+\subsubsection{Elasticsearch Instance}
 The instance running Elasticsearch had the following specifications: 2 vCPUs, 10 GB memory and 20 GB SSD.
-Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}} suggest that memory will be the most important resource in most use cases.
+Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}}
+suggest that memory will be the most important resource in most use cases.
 As a result more memory were chosen over the number of CPUs.
-An important setting in Elasticsearch is the heap memory usage.
-By default the heap memory size is set to 1 GB.
-The Elasticsearch heap size were set to 5 GB in the test environment.
-According to the Elasticsearch documentation
-Set the heap size to half of the memory\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html  }}.
+An important setting in Elasticsearch is the heap size.
+By default the heap memory size is set to 1 GB, but were changed to 5 GB in the test environment.
+A logical asumption would be to set the Elasticsearch to use all the available memory, except the memory needed for the operating system.
+However, Elasticsearch's underlying structure Lucene also needs memory.
+Lucene stores the data in separate files.
+The datastructure inside the files are immutable, which makes them optimized for caching.
+With this strategy Lucene optimizes the underlying operating system's eager to hold small and often used files in memory.
+According to the Elasticsearch documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html}}
+the heap size should be set to 50\% or less, of the available memory.
 
-Node JS
-4vCPUs, 4GB memory
-10 GB SSD
+Most operating systems today also comes with swapping turned on by default.
+However, if the operating system decides to swap it would significantly reduce the performance.
+To avoid the problem swapping were turned off on the Elasticsearch instance.
 
-location europe-west1-c
+\subsubsection{NodeJS Instance}
+The instance running NodeJS had the following specifications: 4 vCPUs, 4 GB memory and 10 GB SSD.
+
+Node.js is by design single threaded, which would make 3 of the cores on the Node.js server being idle.
+However, this problem can be solved by using tool called pm2\footnote{\url{http://pm2.keymetrics.io/}}.
+pm2 has a feature called \textit{cluster mode}, which may spawn multple Node.js instances.
+To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js instances as the number of cores.
+
+[??] pm2 were used to restart failed instances of node.
 
 \subsection{Data Set}
 \label{sec:dataset}
@@ -52,6 +72,8 @@ After the initial request the respons is cached by Lucene and makes all the subs
 About 50\% increased latency with the Lucene implementation.
 Can see that Lucene heavily caches search result.
 The first initial results often is a lot slower than the subsequent searces.
+
+\subsection{Elasticsearch Experiment Results}
 
 \section{Discussion}
 
