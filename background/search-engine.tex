@@ -59,13 +59,47 @@ A documents score in Elasticsearch is given by the Equation \ref{eq:document-sco
   \label{eq:document-score}
 \end{cequation}
 
+\subsection{Vector Space Model}
+The theory presented earlier only describes how to score a single term, but user queries may contain multiple terms.
+Search engines often apply a technique called \textit{Vector Space Model} on queries with multiple terms.
+Vector space model represent the query and the document as vector.
+The vector is a an array which holds term weights.
+Vector similarity is calculated between the query and the documents.
+The documents which is most similar is then returned from the search.
+The most common technique to calculate similarity is called cosine similarity.
+
 \subsection{Multiple Term Query}
-The document score function described in Section \ref{sec:doc-score} is only used when searching for a single term.
-While a term query containing multiple terms requires a combination of techniques.
-A multiple term query inside Lucene combines the following techniques:
-boolean model, TF/IDF and vector space model.
+Elasticsearch's underlying technology Lucene,
+combines the boolean model, TF/IDF and vector space model to score queries with multiple terms against documents.
 Equation \ref{eq:scoring-function} shows how each document are scored against a multiterm query.
 Table \ref{tbl:scoring-function} explaines each variable in equation \ref{eq:scoring-function}.
+
+The variables \textit{queryNorm}, \textit{coord} and \textit{getBoost} are not decribed until now. [?? refrace]
+\textit{queryNorm} or \textit{query normalization factor} are used to make results from different queries comparable.
+The factor is calculated using equation \ref{eq:query-normalization-factor}.
+\textit{sumOfSquaredWeights} are determined by adding the idf value of all the terms in the query,
+and squaring the result afterwards.
+As a result, every document will have the same query normalization factors.
+
+The \textit{coord} variable stands for \textit{coordination factor}.
+With the factor documents which contains most terms from the query will be ranked highest.
+Without the factor documents with more matching terms would still be ranked higher.
+However, the factor boost the top matching document scores even more.
+[?? example]
+
+Lastly, the variable named \textit{getBoost} is used to make some field impact more on the document score,
+compared to other fields.
+
+\begin{cequation}
+	\begin{equation}
+		\begin{aligned}
+			\mathbf{queryNorm} = \frac{1}{\sqrt{sumOfSquaredWeights}}
+		\end{aligned}
+	\end{equation}
+	\caption{Equation for calculating the query normalization factor}
+  \label{eq:query-normalization-factor}
+\end{cequation}
+
 A more in depth explanation is available at Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoring-function.html}}.
 
 \begin{cequation}
@@ -100,7 +134,4 @@ A more in depth explanation is available at Elasticsearch's documentation\footno
 \end{table}
 
 [??] Write about:
-- Vector space model
-- Query normalization fatur
-- Query coordination
 - Boost factor
