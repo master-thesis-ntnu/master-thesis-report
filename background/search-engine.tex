@@ -70,7 +70,7 @@ The most common technique to calculate similarity is called cosine similarity.
 
 \subsection{Multiple Term Query}
 Elasticsearch's underlying technology Lucene,
-combines the boolean model, TF/IDF and vector space model to score queries with multiple terms against documents.
+combines the boolean model, TF/IDF and vector space model to score queries with multiple terms against documents \footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoring-function.html}}.
 Equation \ref{eq:scoring-function} shows how each document are scored against a multiterm query.
 Table \ref{tbl:scoring-function} explaines each variable in equation \ref{eq:scoring-function}.
 
@@ -89,6 +89,9 @@ However, the factor boost the top matching document scores even more.
 
 Lastly, the variable named \textit{getBoost} is used to make some field impact more on the document score,
 compared to other fields.
+In Elasticsearch there exists two different method of boosting, query time boosting and index time boosting.
+Index time boosting means that all terms in a specified field, will recieve the boost factor during indexing.
+Query time boosting on the other hand calculates and adds the boost factor when the query is running on the Elasticsearch node.
 
 \begin{cequation}
 	\begin{equation}
@@ -99,8 +102,6 @@ compared to other fields.
 	\caption{Equation for calculating the query normalization factor}
   \label{eq:query-normalization-factor}
 \end{cequation}
-
-A more in depth explanation is available at Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoring-function.html}}.
 
 \begin{cequation}
 	\begin{equation}
@@ -132,6 +133,3 @@ A more in depth explanation is available at Elasticsearch's documentation\footno
 		\caption{Variable descriptions for equation \ref{eq:scoring-function}.}
 		\label{tbl:scoring-function}
 \end{table}
-
-[??] Write about:
-- Boost factor
