@@ -41,21 +41,33 @@ According to the Elasticsearch documentation\footnote{\url{https://www.elastic.c
 the heap size should be set to 50\% or less, of the available memory.
 
 Most operating systems today also comes with swapping turned on by default.
-However, if the operating system decides to swap it would significantly reduce the performance.
+If the operating system decides to swap it would significantly reduce the performance.
 To avoid the problem swapping were turned off on the Elasticsearch instance.
 
 \subsubsection{NodeJS Instance}
 The instance running NodeJS had the following specifications: 4 vCPUs, 4 GB memory and 10 GB SSD.
+On the web server we want to be able to handle as many requests as possible.
+The number of requests the server is able to handle are closely linked to the number of cores.
+That is why the Node.js instance has more cores at the cost of less memory.
 
 Node.js is by design single threaded, which would make 3 of the cores on the Node.js server being idle.
 However, this problem can be solved by using tool called pm2\footnote{\url{http://pm2.keymetrics.io/}}.
 pm2 has a feature called \textit{cluster mode}, which may spawn multple Node.js instances.
 To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js instances as the number of cores.
 
-[??] pm2 were used to restart failed instances of node.
-
 \subsection{Data Set}
 \label{sec:dataset}
+The data set consits of photo data gathered from the Flickr API \footnote{\url{https://www.flickr.com/services/api/}}.
+
+All the data are gathered over the periode january to may.
+The data set used in the experiment consists of [??] photos and [??] tags.
+
+Analysing the data set discovered that each photo have an average of [??] tags.
+A total of [??] images have no tags and [??] have atleast 1 tag.
+
+[?? move to approach?]
+Elasticsearch has two different mapping options, dynamic mapping and static mapping.
+
 
 \subsection{Performance Metrics}
 
@@ -74,6 +86,9 @@ Can see that Lucene heavily caches search result.
 The first initial results often is a lot slower than the subsequent searces.
 
 \subsection{Elasticsearch Experiment Results}
+To evaluate the performance of the plugin developed a few tests were conducted.
+All of the tests were done in two different ways,
+one prewaring the cache and one without prewaring the cache.
 
 \section{Discussion}
 
