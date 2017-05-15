@@ -1,8 +1,11 @@
 \section{Software}
 This section describs the software used in this master thesis.
+Lucene were used in the initial implementation of query expansion.
+The last experiment utilized Node.JS as the webserver and Elasticsearch as the search engine.
 
-NodeJS\footnote{\url{https://nodejs.org}} v7 was chosen as the webserver.
-NodeJS was chosen because the author has knowledge of the technology,
+\subsection{Node.js}
+Node.js\footnote{\url{https://nodejs.org}} version 7 was chosen as the webserver.
+Node.js was chosen because the author has knowledge of the technology,
 and it contains a rich package manager called NPM.
 By utilizing open source libraries through NPM, more time could be spent implementing the algoritms for query expansion.
 Inside NodeJS lies the V8\footnote{\url{https://developers.google.com/v8/}} JavaScript engine.
@@ -52,11 +55,9 @@ Elasticsearch is open source and built on top of Lucene.
 Lucene is the search engine itself,
 and Elasticsearch provides functionality for distribution and a REST API interface.
 
-- Elasticsearch Machine Learning in Beta as of may https://www.elastic.co/products/x-pack.
-- Elasticsearch vs Solr
-
 The following topics describes basic termonology used in Elasticsearch.
-This information is needed to understand some of the results and observations described in chapter \ref{ch:approach} and chapter \ref{ch:evaluation}.
+This information is needed to understand some of the results and observations,
+and the implementation described in chapter \ref{ch:approach} and chapter \ref{ch:evaluation}.
 
 \subsubsection{Cluster}
 One or more servers connected together is called a cluster.
@@ -93,7 +94,7 @@ One Elasticsearch shard is the same as a Lucene index.
 However, when the cluster consists of multiple nodes a query strategy is required.
 Figure \ref{fig:elasticsearch-sharding} illustrates how an index may be distributed across three nodes.
 The figure shows a simplified view on how a query are distributed across three nodes.
-First the query arrives a coordination node [??check type].
+First the query arrives a coordination node.
 The coordination node parses the query and determines which nodes holds shards for the given index.
 Each shard determines locally which documents are most relevant from the query.
 Metada from all the shards are then sent back to the coordination node.
@@ -111,7 +112,7 @@ After the documents are retrieved the result are returned back to the client.
 
 \subsubsection{Aproximate Values}
 As a result of Elasticsearch's distributed nature some queries will return estimated values.
-Aggregations in Elasticsearch may return estimated values.
+Aggregations in Elasticsearch is an example which may return estimated values.
 
 Table \ref{tbl:shard-term-counts} has a list of words across three different shards.
 The term frequencies are listed inside the parenthesis.
@@ -127,8 +128,10 @@ the top three terms would be \texttt{blue}, \texttt{sky} and \texttt{insta},
 with the term frequencies 60, 32 and 22 respectively.
 With global knowledge both the frequencies and one of the top 3 terms have changed.
 
-[??] Write more here. Større dataset jevner ut forskjellene.
-
+The example explained above is exaggerated to illustrate what might happen in Elasticsearch's distributed architechture.
+Even though the result is not exact, it is good enough for most use cases.
+Elasticsearch can be configured to return more exact results,
+at the cost of longer response times.
 
 \begin{table}[h!]
     \centering

@@ -74,7 +74,7 @@ combines the boolean model, TF/IDF and vector space model to score queries with 
 Equation \ref{eq:scoring-function} shows how each document are scored against a multiterm query.
 Table \ref{tbl:scoring-function} explaines each variable in equation \ref{eq:scoring-function}.
 
-The variables \textit{queryNorm}, \textit{coord} and \textit{getBoost} are not decribed until now. [?? refrace]
+The variables \textit{queryNorm}, \textit{coord} and \textit{getBoost} are described in greater details in the following paragraphs.
 \textit{queryNorm} or \textit{query normalization factor} are used to make results from different queries comparable.
 The factor is calculated using equation \ref{eq:query-normalization-factor}.
 \textit{sumOfSquaredWeights} are determined by adding the idf value of all the terms in the query,
@@ -84,8 +84,12 @@ As a result, every document will have the same query normalization factors.
 The \textit{coord} variable stands for \textit{coordination factor}.
 With the factor documents which contains most terms from the query will be ranked highest.
 Without the factor documents with more matching terms would still be ranked higher.
-However, the factor boost the top matching document scores even more.
-[?? example]
+However, the boost factor gives documents with more matching terms a even higher score compared to documents with less matching terms.
+For instance, a query might contain two terms, with a term weight of 3.
+If the score where calculated without the boost factor,
+documents with one matching term would recieve a score of 3 and documents with two matching terms would recieve a score of 6.
+Calculating the score with the boost factor documents with one matching terms recieves a score of $(3 \times 1)/ 2 = 1.5$,
+and documents with two matching terms would recieve a score of $(6 \times 2) / 2 = 6$.
 
 Lastly, the variable named \textit{getBoost} is used to make some field impact more on the document score,
 compared to other fields.

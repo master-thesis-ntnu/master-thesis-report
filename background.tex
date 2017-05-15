@@ -1,9 +1,9 @@
 \chapter{Background}
 \label{ch:background}
 This chapter presents basic theory and techniques behind search engines. First
-the technologies used in the implementation are explained, and then followed by a
+the software used in the implementation are explained, and then followed by a
 detailed description on how the documents are scored inside the search engine from a
-query. Finally, relevance feedback is described as well as how it may be used in an query
+query. Finally, relevance feedback is described as well as how it may be used with query
 expansion.
 
 \section{Open Source Search Engine Solutions}
@@ -14,14 +14,15 @@ Solr\footnote{\url{http://lucene.apache.org/solr/}} and Xapian\footnote{\url{htt
 
 Some of the search engines contains query expansion implementations,
 but they are limited to synonyms expansion.
-None of the open source databases deliver personalized search capabilities.
+% None of the open source databases deliver personalized search capabilities.
 
 \input{background/technology}
 \input{background/search-engine}
-\input{background/relevance}
+%\input{background/relevance}
 \input{background/relevance-feedback}
 \input{background/query-expansion}
 
 \section{Notes}
 - Personalized search Google https://googleblog.blogspot.no/2009/12/personalized-search-for-everyone.html
 - Some of the queries from Elasticsearch returns estimated values (aggregations). Important because of performance. Queries is distributed across multiple nodes.
+- Larger dataset equal incorrectness https://www.elastic.co/guide/en/elasticsearch/guide/current/relevance-is-broken.html
