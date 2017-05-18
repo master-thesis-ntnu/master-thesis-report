@@ -5,25 +5,33 @@ but they have some platfroms specific differences which are explained in their r
 The algorithm starts by sending a term search to the search engine.
 The result from the initial search are often reffered to as top-k documents,
 where k stands from the number of documents in the results.
-The photos from the result are then looped through to extract all the tags.
-Each tag is stored in an hash map for fast retrieval.
-On every iteration the tag are checked against the hash map.
+The photos from the result are then looped through to extract all the terms.
+Each term is stored in an hash map for fast retrieval.
+On every iteration the term are checked against the hash map.
 If the term does not exists,
 the term is added to the hash map.
 The key is the hash map itself,
 and the value is an object which stores information about the total number of times the term occurs in the whole collection,
 the total number of terms in total in the collection and the number of times the term is present in the top-k documents.
-In the opposite case where the tag already exists, the term counter for the current term is incremented.
+In the opposite case where the term already exists, the term counter for the current term is incremented.
 the counter for the number of times the term appears in the top-k documents are incremented by one.
 
-On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
-but as the term information is stored it is only necessary when a new term appears.
+After looping through the photos the information about how many terms there are in the whole collection is retrieved from the search engine.
+Now all the information required to calculate the KL-score is available.
+All the keys in the hash map are now iterated through to retrieve every single term.
+In every iteration the equation \ref{eq:kl-distribution-q} is used to calculate the KL-score.
+An array is used to store objects which holds information about which term it is and the corresponding KL-score.
+Subsequently the array is sorted from high to low according to their KL-score.
 
+Next the expanded search terms needs to be generated.
+A new string array is created to hold the new search terms.
+First the old search terms are added to the array,
+then the new expanded terms are added to the array.
+In this implementation a maximum of ten terms may be added to the term search.
 
-The initial thought where to calculate the KL-score for each term and skip the step
-
-The information about how many times a tag appears in the collection are retrieved from the search engine.
-The number of search engine accesses depends on the number of unique tags in the top-k documents.
+Lastly, the expanded terms are used in a new term search.
+The search engine are queried for the terms,
+and the result from the search are returned directly back to the client without any modifications.
 
 \begin{algorithm}
   \begin{algorithmic}
@@ -47,3 +55,11 @@ The number of search engine accesses depends on the number of unique tags in the
   \end{algorithmic}
   \caption{Algorithm used in the Lucene implementation.}
 \end{algorithm}
+
+\subsubsection{Algorithm Complexity}
+- could use a datastructure which sorts each item which is inserted.
+- could use a single request to fetch all the needed data instead of many small ones
+- On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
+but as the term information is stored it is only necessary when a new term appears.
+- The information about how many times a term appears in the collection are retrieved from the search engine.
+- The number of search engine accesses depends on the number of unique terms in the top-k documents.
