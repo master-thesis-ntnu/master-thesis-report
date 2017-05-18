@@ -1,0 +1,49 @@
+\subsection{Algorithm}
+The algorithm used for query expansion is equal on both platforms,
+but they have some platfroms specific differences which are explained in their respective subsections.
+
+The algorithm starts by sending a term search to the search engine.
+The result from the initial search are often reffered to as top-k documents,
+where k stands from the number of documents in the results.
+The photos from the result are then looped through to extract all the tags.
+Each tag is stored in an hash map for fast retrieval.
+On every iteration the tag are checked against the hash map.
+If the term does not exists,
+the term is added to the hash map.
+The key is the hash map itself,
+and the value is an object which stores information about the total number of times the term occurs in the whole collection,
+the total number of terms in total in the collection and the number of times the term is present in the top-k documents.
+In the opposite case where the tag already exists, the term counter for the current term is incremented.
+the counter for the number of times the term appears in the top-k documents are incremented by one.
+
+On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
+but as the term information is stored it is only necessary when a new term appears.
+
+
+The initial thought where to calculate the KL-score for each term and skip the step
+
+The information about how many times a tag appears in the collection are retrieved from the search engine.
+The number of search engine accesses depends on the number of unique tags in the top-k documents.
+
+\begin{algorithm}
+  \begin{algorithmic}
+    \Require{Search terms from the user is defined as $searchTerms$}
+    \State $initialSearchResult \gets \Call{termsSearch}{searchTerms}$
+    \State $termsData \gets [ ]$
+    \State $sortedTerms \gets [ ]$
+
+    \For {$photos$ in $initialSearchResult$}
+      \For {$term$ in photos}
+        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+        \State \Call{insertTermsData}{term, numberOfTimesInCollection, numberOfTermsInCollection}
+      \EndFor
+    \EndFor
+    \For {$term$ in $termsData$}
+      \State $\Call{calulate}$
+      \Call{insertTerm}{sortedTerms, term}
+    \EndFor
+
+  \end{algorithmic}
+  \caption{Algorithm used in the Lucene implementation.}
+\end{algorithm}

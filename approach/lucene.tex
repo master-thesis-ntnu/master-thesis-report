@@ -1,0 +1,24 @@
+\subsection{Lucene Architecture}
+\cite{lucene-documentation}
+Most search engines strives to hold the data in memory.
+To achieve the performance desired by Lucene the whole index is kept in memory.
+
+The tag field is stored with information about document frequency for each term.
+The document frequency is required to calculate the KL score for each term.
+
+Minimal Java optimizations
+
+Even though the Lucen implementation delivered promising results, Lucene in itself is not scalable.
+As one of the research questions
+
+\subsubsection{Lucene Notes}
+- Discuss java methods to retrieve term frequency from the inverted index
+
+\begin{figure}[h!]
+  \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}
+  \caption{Sequence diagram for the Lucene implementation.}
+  \label{fig:sequence-diagram-lucene}
+\end{figure}
+
+\subsubsection{Indexing}
+\subsubsection{Searching}
