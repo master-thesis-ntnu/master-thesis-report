@@ -1,4 +1,5 @@
 \subsection{Algorithm}
+\label{sec:algorithm}
 The algorithm used for query expansion is equal on both platforms,
 but they have some platfroms specific differences which are explained in their respective subsections.
 
@@ -57,7 +58,51 @@ and the result from the search are returned directly back to the client without 
 \end{algorithm}
 
 \subsubsection{Algorithm Complexity}
-- could use a datastructure which sorts each item which is inserted.
+[?? maybe move to evaluation]
+An important aspect of every algorithm is to analyze its complexity.
+The algorithm explained in \ref{sec:algorithm} have two different inputs we have to consider.
+Firstly the number of terms in top-k documents, and secondly the number of unique terms.
+This analysis only examine the algorithm itself and does not account for the time it takes to retrieve data from the search engine.
+
+The algorithm contains a total of three loops and one sorting algorithm.
+Initially all the tags are iterated through,
+which means the size is equal to the number of tags in the top-k documents.
+The second loop is of the same size as the number of unique terms.
+This number have a best case of only one unique tag and a worst case of T unique terms.
+Lastly, all the unique tags are sorted using a function inside the Java util library called \texttt{Arrays.sort()}.
+\texttt{Arrays.sort()} uses an algorithm called merge sort,
+which has a worst case of $O(n\log{}n)$.
+
+Combining all the loops described above, the algorithm complexity  given in equation \ref{eq:algorithm-complexity}.
+$T$ is the numbor of tags and $U$ is the number of unique terms.
+
+\begin{cequation}[H]
+	\begin{equation}
+		\mathbf{f(T, U)} = T + U + U\log{}U \\
+	\end{equation}
+  \caption{Algorithm complexity for the algorithm explained in subsection \ref{sec:algorithm}.}
+  \label{eq:algorithm-complexity}
+\end{cequation}
+
+%\subsubsection{Algorithm Improvements}%
+
+%From the complexity analysis one improvement becomes apparent.
+%Combinding the step which counts the KL-score of each tag may be combined with the sort operation.
+%However,
+
+%Even though it is possible to improve the number of iterations in the algorithm,
+%the search against the search engine have a greater impact on the response time.
+
+
+%\begin{cequation}[H]
+%	\begin{equation}
+%		\mathbf{f(T, U)} = T + U + U\log{}U \\
+%	\end{equation}
+%  \caption{Algorithm complexity for the an improved version of the algorithm described in subsection \ref{sec:algorithm}.}
+%  \label{eq:algorithm-improved}
+%\end{cequation}
+
+
 - could use a single request to fetch all the needed data instead of many small ones
 - On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
 but as the term information is stored it is only necessary when a new term appears.
