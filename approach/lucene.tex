@@ -1,22 +1,11 @@
 \subsection{Lucene Architecture}
+This subsection describes how query expansion were implemented using the Apache Lucene java library.
 The Lucene implementation were done using version 6.4.0 of Lucene \cite{lucene-documentation}.
+To avoid Lucene using the disk the index were kept in memory,
+which implemented by utilizing a class in Lucene called \texttt{RAMDirectory}.
 
-Most search engines strives to hold the data in memory.
-To achieve the performance desired by Lucene the whole index is kept in memory.
-
-The tag field is stored with information about document frequency for each term.
-The document frequency is required to calculate the KL score for each term.
-
-Minimal Java optimizations
-
-
-Even though the Lucen implementation delivered promising results, Lucene in itself is not scalable.
-As one of the research questions
-
-\texttt{IndexOptions.DOCS\_AND\_FREQS}
-
-\subsubsection{Lucene Notes}
-- Discuss java methods to retrieve term frequency from the inverted index
+There may be possible to achieve better performance by implementing Java optimizations,
+but that is outside the scope of this master thesis and were thus never investigated.
 
 \subsubsection{Indexing}
 Lucene have multiple data types which may be stored,
@@ -55,8 +44,17 @@ Figure shows a sequence diagram for the Lucene implementation.
 As the sequence diagram shows, the java program first recieves the query.
 The query is then sent to the Lucene index as a multi term query.
 Lucene then returns the top-k documents from the index.
-
-
+Calculating the KL-scores requires information about how many times each term appears in the collection,
+and the total number of terms in the collection.
+As Lucene exposes a low level interface,
+this information may be retrieved directly from the inverted index.
+The function \texttt{totalTermFreq} from the class \texttt{IndexReader} returns the number of times a term is present across all documents.
+The inverted index also holds information about the total number of terms in the collection.
+This number is retrieved by using the function \texttt{getSumTotalTermFreq} from the same \texttt{IndexReader} class.
+After all the necessary information have been gathered the KL-score is calculated,
+and the new expanded search terms are generated.
+Finally, the multi term search are sent to the index.
+The final result are then returned back to the client.
 
 \begin{figure}[h!]
   \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}
