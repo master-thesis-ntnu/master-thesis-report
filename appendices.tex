@@ -1,6 +1,7 @@
 \chapter{Appendices}
 
 \section{Elasticsearch Query}
+[?? old maybe remove]
 \begin{lstlisting}[language=json, caption={Initial query to retrive query expansion data}, label={ap:initial-query}]
 {
     query : {
@@ -52,8 +53,32 @@
 
 \section{Elasticsearch Static Mapping}
 [?? add mapping]
-\begin{lstlisting}[language={java}, caption={The static Elasticsearch mapping used on the photo index in the experiment setup.}, label={ap:elasticsearch-mapping}]
+\begin{lstlisting}[language={json}, caption={The static Elasticsearch mapping used on the photo index in the experiment setup.}, label={ap:elasticsearch-mapping}]
 {
 
 }
+\end{lstlisting}
+
+\section{Single Term Query}
+[?? add code]
+\begin{lstlisting}[language={java}, caption={Java code used to search for a single term.}, label={ap:single-term-query}]
+
+\end{lstlisting}
+
+\section{Multiple Term Query}
+[?? add code]
+\begin{lstlisting}[language={java}, caption={Java code used to search for multiple terms.}, label={ap:multiple-term-query}]
+
+\end{lstlisting}
+
+\section{Query to Retrieve the Number of Occurences for a Given Term}
+[?? add code]
+\begin{lstlisting}[language={java}, caption={Java code used retrieve the number of occurences for a given term in the collection.}, label={ap:number-of-occurences-query}]
+
+\end{lstlisting}
+
+\section{Field Stats Query}
+[?? add code]
+\begin{lstlisting}[language={java}, caption={Java code used retrieve the total number of terms in a field in the collection.}, label={ap:field-stasts-query}]
+
 \end{lstlisting}

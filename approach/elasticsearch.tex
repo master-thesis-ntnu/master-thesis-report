@@ -52,6 +52,10 @@ The terms are extracted by spliting the query string on the character "space".
 
 - Elasticsearch queries in java which are used
 
+- Describe REST listener
+
+- Describe the configration required to create an Elasticsearch plugin
+
 \begin{figure}[h!]
 \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-elasticsearch.png}
 \caption{Sequence diagram for the Elasticsearch implementation.}
@@ -59,9 +63,61 @@ The terms are extracted by spliting the query string on the character "space".
 \end{figure}
 
 \subsubsection{Indexing}
-Elasticsearch has two different mapping options, dynamic mapping and static mapping.
+Many storage solutions requires the stored data types to be defined before inserting data.
+Elasticsearch have support to both predefined data types and data types determined at index time.
+Data types determined while indexing is called dynamic mapping, and predefined data types are called static mapping.
+Dynamic mapping are useful when prototyping and developing.
+However, dynamic mapping may assign wrong types to a field.
+For instance one might have a geo location point.
+A geo location point will most likely be sent to Elasticsearch as two floats, latitude and longitude.
+It is fine to store the values as floats, but Elasticsearch have separate data type for latitude and longitude called Geo-point.
+
+With static mapping on the other hand, every mapping type are defined before indexing.
+Static mapping ensures that each field is assigned the correct mapping.
+The mapping used in this master thesis is available in appendix \ref{ap:elasticsearch-mapping}.
 
 \subsubsection{Searching}
+All the searches in the Elasticsearch implementation is similar to the searches described in the Lucene implementation,
+but there are a few important differences.
+The query expansion algorithm requires three different types of search:
+single term query, multiple term query and field stats query.
+
+The first step of the algorithm is to retrieve the top-k documents.
+In elasticsearch this is done as a multiple term query,
+and the implemented Java code is available in appendix \ref{ap:multiple-term-query}.
+
+Retrieving the number of times a term appears in the collection may be done through Elasticsearch's count API.
+However, this API is not available through the Java client library.
+Instead this information may be fetched using a normal single term query.
+The search results in the term query also contains metadata.
+Listing \ref{ap:elasticsearch-metadata} displays an example on how the metadata may look.
+The metadata contains information about how long the search took, how many shards searched, the total number of hits,
+the maximum returned document score and the search result itself.
+To retrieve the number of times is in the collection, Elasticsearch count API\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/reference/5.2/search-count.html}}.
+
+Elasticsearch does have a Count API,
+but this API is not available in the Java client for Elasticsearch 5.x.
+
+
+\begin{lstlisting}[language={json}, caption={Example of the metadata returned by Elasticsearch.}, label={ap:elasticsearch-metadata}]
+{
+  "took": 3,
+  "timed_out": false,
+  "_shards": {
+    "total": 5,
+    "successful": 5,
+    "failed": 0
+  },
+  "hits": {
+    "total": 2912,
+    "max_score": 9.73782,
+    "hits": [
+      ...
+    ]
+  }
+}
+\end{lstlisting}
+
 - Count API
 - Maybe faster to use one big request
 -
