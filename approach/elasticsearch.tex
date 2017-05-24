@@ -89,15 +89,19 @@ and the implemented Java code is available in appendix \ref{ap:multiple-term-que
 Retrieving the number of times a term appears in the collection may be done through Elasticsearch's count API.
 However, this API is not available through the Java client library.
 Instead this information may be fetched using a normal single term query.
-The search results in the term query also contains metadata.
-Listing \ref{ap:elasticsearch-metadata} displays an example on how the metadata may look.
-The metadata contains information about how long the search took, how many shards searched, the total number of hits,
+Metadata from the search result contains the needed information.
+Listing \ref{ap:elasticsearch-metadata} displays an example on how the returned result may look.
+The array \texttt{hits} is intentionally left out to keep the example short,
+as the array contains the search result itself.
+The search result consists of information about how long the search took, how many shards searched, the total number of hits,
 the maximum returned document score and the search result itself.
-To retrieve the number of times is in the collection, Elasticsearch count API\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/reference/5.2/search-count.html}}.
+In listing \ref{ap:elasticsearch-metadata} there is a field called \texttt{total},
+which indicates the total number of hits the term query produced.
 
-Elasticsearch does have a Count API,
-but this API is not available in the Java client for Elasticsearch 5.x.
-
+Lastly, the query expansion also requires to know the total number of terms in the collection.
+This information can be retrieved using Elasticsearch's field stats API.
+The API exposes native Lucene index function,
+for retrieving metadata from the inverted index.
 
 \begin{lstlisting}[language={json}, caption={Example of the metadata returned by Elasticsearch.}, label={ap:elasticsearch-metadata}]
 {

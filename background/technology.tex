@@ -78,7 +78,6 @@ A tribe node is handling the coordination of querying and indexing.
 Tribe nodes i also known as coordination nodes.
 All nodes in a cluster is also an coordination node.
 
-
 \subsubsection{Sharding}
 The stored data in Elasticsearch may grow to become larger than the hardware on a single machine can handle,
 both in size and in number of requests.
@@ -103,6 +102,8 @@ On the coordination node alle the retrieved metadata are used to calculate the g
 After the global result have been calculated,
 all the shards are then queried for the documents from the global result.
 After the documents are retrieved the result are returned back to the client.
+
+[?? mention that larger size value requires more work and thus slower search result]
 
 \begin{figure}[h]
   \centering
