@@ -56,23 +56,39 @@ However, this problem can be solved by using tool called pm2\footnote{\url{http:
 pm2 has a feature called \textit{cluster mode}, which may spawn multple Node.js instances.
 To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js instances as the number of cores.
 
+To test the implementation the Node.js web server implemented two different endpoints.
+
+- Node.js, version
+- Configuration NODE\_ENV=production
+- pm2
+- two endpoints, one for base line one for query expansion
+
 \subsection{Data Set}
 \label{sec:dataset}
-The data set consits of photo data gathered from the Flickr API \footnote{\url{https://www.flickr.com/services/api/}}.
+The data set consits of photo data gathered from the Flickr API\footnote{\url{https://www.flickr.com/services/api/}}.
 
 All the data are gathered over the periode january to may.
-The data set used in the experiment consists of [??] photos and [??] tags.
+The data set used in the experiment consists of 4,561,816 photos and 9,993,411 tags.
+Of all the photos, a total of 1,708,324 photos have 1 or more tags.
+Which means that 37 \% of the photos have tags.
 
 Analysing the data set discovered that each photo have an average of [??] tags.
 A total of [??] images have no tags and [??] have atleast 1 tag.
 
+\begin{figure}[h!]
+  \centering \includegraphics[width=1\linewidth]{img/number-of-tags-distribution.png}
+  \caption{Pie chart that shows the distribution on how many tags each photo have.}
+  \label{fig:result-vary-result-size}
+\end{figure}
 
 \subsection{Performance Metrics}
+Evaluating the implementation is done by measuring the response time from a client sends the request to the response arrives.
+
 
 \begin{figure}[h!]
-\centering \includegraphics[width=0.9\linewidth]{img/latency-measurements.png}
-\caption{Overview of the different measurements used when evaluating the implementation.}
-\label{fig:latency-measurements}
+  \centering \includegraphics[width=0.9\linewidth]{img/latency-measurements.png}
+  \caption{Overview of the different measurements used when evaluating the implementation.}
+  \label{fig:latency-measurements}
 \end{figure}
 
 \section{Results}
@@ -93,6 +109,19 @@ The first initial results often is a lot slower than the subsequent searces.
 To evaluate the performance of the plugin developed a few tests were conducted.
 All of the tests were done in two different ways,
 one prewaring the cache and one without prewaring the cache.
+
+
+\begin{figure}[h!]
+  \centering \includegraphics[width=1\linewidth]{img/result-vary-result-size.png}
+  \caption{Overview of the different measurements used when evaluating the implementation.}
+  \label{fig:result-vary-result-size}
+\end{figure}
+
+\begin{figure}[h!]
+  \centering \includegraphics[width=1\linewidth]{img/result-vary-result-size-without-cache.png}
+  \caption{Overview of the different measurements used when evaluating the implementation.}
+  \label{fig:result-vary-result-size}
+\end{figure}
 
 \section{Discussion}
 On Elastic's offical website there is a discussion about devoloping plugins for Elasticsearch.
