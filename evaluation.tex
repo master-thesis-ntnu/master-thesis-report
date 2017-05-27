@@ -1,5 +1,10 @@
 \chapter{Evaluation}
 \label{ch:evaluation}
+This chapter explains how the implementations were tested together with the results.
+The first section explains how the Lucene and the Elasticsearch experiments were conducted.
+Section \ref{sec:results} shows the results and how the results were obtained,
+and section \ref{sec:discussion} discusses the results.
+Lastly, section \ref{sec:reasearch-questions-evaluation} evaluates the research questions agains the results.
 
 \section{Experimental Setup}
 - Why are there two experiments.
@@ -66,6 +71,7 @@ To test the implementation the Node.js web server implemented two different endp
 \subsection{Data Set}
 \label{sec:dataset}
 The data set consits of photo data gathered from the Flickr API\footnote{\url{https://www.flickr.com/services/api/}}.
+The data set is gathered over
 
 All the data are gathered over the periode january to may.
 The data set used in the experiment consists of 4,561,816 photos and 9,993,411 tags.
@@ -124,6 +130,7 @@ one prewaring the cache and one without prewaring the cache.
 \end{figure}
 
 \section{Discussion}
+\label{sec:discussion}
 On Elastic's offical website there is a discussion about devoloping plugins for Elasticsearch.
 The quote below is an answer from the Elastic developer Adrien Grand on wheter there exists an offical guide on how to develop Elasticsearch plugins \cite{elasticsearch-plugin-quote}.
 
@@ -134,6 +141,30 @@ The quote below is an answer from the Elastic developer Adrien Grand on wheter t
 \end{quote}
 
 \section{Research Question Evaluation}
+\label{sec:reasearch-questions-evaluation}
+\begin{enumerate}
+  %\item How to provide instant personalized recommendations on a cold start based on the query typed?
+  \item \textbf{How to achieve more relevant search results based on a query from a user?} \newline
+  As mentioned in section \ref{sec:problem-specification} the main focus areas were scaling and latency.
+  Therefore, the relevance was never measured.
+  Based on the work by Rudihagen,
+  this project report assumes that query expansion returns more relevant results compared to the baseline search.
+
+  \item\label{rq:scaling} \textbf{How to make the search recommandation scale with an increasing amount of data?} \newline
+  As mentioned earlier, Elasticsearch is proven to scale to petabytes of data \cite{elasticsearch-scale},
+  if configured correctly, and was thus used as the search engine for this project report.
+  Rudihagen's implementation also used Elasticsearch, and was configured with one index for each user.
+  This configuration is fine for most cases, but according to the documentation this does not scale well if you have a large user base \cite{elasticsearch-indices}.
+
+  Elasticsearch require proper tuning and configuration.
+  Without testing the solution on a large data we cannot conclude that the implementation would scale,
+  but the current implementation have potential to scale.
+
+  \item\label{rq:latency} \textbf{How to develop a search recommendation method that fulfills the interactive requirements?} \newline
+  From the results we can see that the implementation are delivering results in about 16 ms, in a test environment.
+  However, the query expansion implementation has a latency which is about 2 times greater than the baseline.
+  For real world use cases, this might exceed the latency to above the interactivity limit.
+\end{enumerate}
 
 \section{Notes}
 - During testing the same query sometimes gave different results. Because of this: https://www.elastic.co/blog/understanding-query-then-fetch-vs-dfs-query-then-fetch
