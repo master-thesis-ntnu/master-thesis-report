@@ -1,12 +1,12 @@
 \section{Experimental Setup}
 Query expansion using pseudo relevance turns out to yield better results in terms of relevance compared to a TF/IDF search,
-which is a common approach in todays search engines.
-However, to use techniques like query expansion,
-the implementation most be fast enough in an interactive environment.
+which is the common approach in todays search engines.
+Even though query expansion delivers more relevant search results,
+the results have to be available fast enough to be used in interactive environments.
 In other words, the results have to be available within 100 ms.
-Evaluating both implementations,
-will use a multi term search which utilizes TF/IDF.
-This search will be used as a baseline to compare the query expansion implementation agins.
+Both implementations will be evaluated against a baseline search.
+The baseline search will in both cases be a multi term search.
+
 Query expansion requires the search engine to process a initial query,
 to then later send a new query to retrieve the final result.
 As the search requires two searches,
@@ -16,7 +16,7 @@ The most interesting results are how much slower the query expansion is compared
 \subsection{Data Set}
 \label{sec:dataset}
 The data set consits of photo data gathered from the Flickr API\footnote{\url{https://www.flickr.com/services/api/}}.
-[?? why was Flickr chosen?]
+Flickr were chosen as the data source as tags have been found to provide strong data for query expansion \cite{ir-hashtag}.
 All the photos were retrieved using Flickr's endpoint for fetching the last published photos.
 However, the API limits the number of requests per hour.
 The photos were gathered over a period of about three months, march 2017 to the end of may 2017.
@@ -30,8 +30,12 @@ Flickr also have an analyzer which ads addition tags,
 but these tags are not available through the API.
 
 The pie chart in figure \ref{fig:pie-chart-tag-distribution} shows the number of tags on each photo.
-The pie chart shows that most of the photos have 5 tags.
-[?? write more here]
+The pie chart shows that photos with 5 tags are the largest group.
+Most of the photos have multiple tags,
+which makes the tag generation better.
+If the top-k documents only have one of the same tag,
+the algorithm will not generate additional tags.
+As a result more tags results in better data for the query expansion algorithm.
 
 \begin{figure}[h!]
   \centering \includegraphics[width=1\linewidth]{img/number-of-tags-distribution.png}
@@ -41,13 +45,48 @@ The pie chart shows that most of the photos have 5 tags.
 
 \subsection{Lucene Experiment}
 The Lucene experiments starts to build the index with all the photo data.
-To make the experiment simpler only the fields: tags, title and url are stored.
+All the data indexed in the Lucene experiment can be seen in table \ref{tbl:lucene-field-types}.
+
+\begin{table}[h!]
+    \begin{tabular}{|l|l|}
+    \hline
+    \textbf{Field}& \textbf{Type}                 \\ \hline
+    id           & StringField          \\ \hline
+    title        & TextField            \\ \hline
+    description  & TextField            \\ \hline
+    dateuploaded & LongPoint            \\ \hline
+    urls         & Array of StringField \\ \hline
+    tags         & Array of TextField   \\ \hline
+    \end{tabular}
+    \centering
+    \caption{Field types of every field used in the experiment.}
+    \label{tbl:lucene-field-types}
+\end{table}
 
 \subsection{Elasticsearch Experiment}
-The Elasticsearch experimental setup contains two main components, a web server and a search engine.
-The web server is implemented in NodeJS and the search engine used is Elasticsearch.
+Most web applications today with a search field will have a web server and a search engine on the backend.
+Figure \ref{fig:elasticsearch-experiment-setup} displays a common setup for web application with search capabilities.
+The client sends a search to the web server which process the request and sends it to the search engine.
+After finding the most relevant documents, the result is sent back from the search engine to the web server,
+which again sends the result to the user.
+As mentioned earlier,
+the requirment response time requirement for interactive applications are 100 ms.
+Response time is measured from the request is sent from the client to the response arrives at the client.
+To verify that the query expansion plugin for Elasticsearch is fast enough to meet the interactive requirements,
+the experiment were setup as shown in figure \ref{fig:elasticsearch-experiment-setup}.
+The client on the figure was the author's laptop,
+and the backend were setup to mimic a real world environment.
+The backend consists of two main components, a web server and a search engine.
 
-As large applications ofter use cloud providers, the tests also needed to be conducted using cloud providers.
+\begin{figure}[h!]
+  \centering \includegraphics[width=0.9\linewidth]{img/elasticsearch-experiment-setup.png}
+  \caption{Overview of the Elasticsearch experiment setup.}
+  \label{fig:elasticsearch-experiment-setup}
+\end{figure}
+
+
+
+As web applications ofter use cloud providers, the tests also needed to be conducted using cloud providers.
 The requirement set for the cloud provider was: need to be videly used, have servers in Europe and provide VPS services.
 Possible providers were: Amozon Web Services\footnote{\url{https://aws.amazon.com/}},
 Google Cloud Platform\footnote{\url{https://cloud.google.com/}} and Digital Ocean\footnote{\url{https://www.digitalocean.com/}}.
@@ -88,16 +127,16 @@ pm2 has a feature called \textit{cluster mode}, which may spawn multple Node.js 
 To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js instances as the number of cores.
 
 To test the implementation the Node.js web server implemented two different endpoints.
-
-- Node.js, version
-- Configuration NODE\_ENV=production
-- pm2
-- two endpoints, one for base line one for query expansion
+One endpoint is used to test the query expansion plugin and the other is used to test a multi term query.
 
 
 
 \subsection{Performance Metrics}
 Evaluating the implementation is done by measuring the response time from a client sends the request to the response arrives.
+The response time can be broken down into two separate parts, latency and execution as shown in figure \ref{fig:latency-measurements}.
+In this thesis latency is defined as the time it takes for a signal to go from the client to the web server and back.
+Execution time is defined from the web server recieves a request from the client until the web server sends a response back to the client.
+This means that the execution time also includes the processing time on the search engine.
 
 
 \begin{figure}[h!]
