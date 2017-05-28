@@ -46,6 +46,14 @@ As a result more tags results in better data for the query expansion algorithm.
 \subsection{Lucene Experiment}
 The Lucene experiments starts to build the index with all the photo data.
 All the data indexed in the Lucene experiment can be seen in table \ref{tbl:lucene-field-types}.
+Even though only the tag field are used,
+more fields indexed to make the experiment closer to a real world application.
+\texttt{StringField} will be indexed as a single token,
+which is useful for aggregating or filtering on the field.
+\texttt{TextField} is indexed for full-text search.
+With the full-text search indexing the field also stores the term frequencies,
+which is required for the query expansion algorithm.
+The reason for using \texttt{LongPoint} on a date is to make it efficient to range searches.
 
 \begin{table}[h!]
     \begin{tabular}{|l|l|}
@@ -128,8 +136,6 @@ To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js
 
 To test the implementation the Node.js web server implemented two different endpoints.
 One endpoint is used to test the query expansion plugin and the other is used to test a multi term query.
-
-
 
 \subsection{Performance Metrics}
 Evaluating the implementation is done by measuring the response time from a client sends the request to the response arrives.
