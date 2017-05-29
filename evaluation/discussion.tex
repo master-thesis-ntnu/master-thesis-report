@@ -8,3 +8,18 @@ The quote below is an answer from the Elastic developer Adrien Grand on wheter t
   The plugin API is mainly a way for us to provide additional functionality through plugins so that we do not have to fold everything into a single release artifact that would be quite huge.
   Some community membors have writter plugins by taking inspiration of existing plugins but we do not want to commit on a stable API for plugins as this might prevent us from improving other areas of elasticsearch.
 \end{quote}
+
+The project report \cite{project-report} used aggregation to retrieve information.
+Aggregation have two important downsides,
+aggregations may consume a great deal of memory,
+and aggregations are approximations may not necessarily return the correct value.
+Another important downside described in the project report is that the aggregation may
+In the implementation described in this thesis the aggregations are removed
+
+- Talk about aggregation memory requirement from project report
+
+- How much slower is the results
+
+- Dont have personalized search in the same way as Rudihagen's master thesis
+
+- Google experiments shows that response times is more important compared to result size

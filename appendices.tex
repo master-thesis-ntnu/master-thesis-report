@@ -166,3 +166,20 @@ long numberOfTermsInCollection = fieldStatsResponse
 
 return numberOfTermsInCollection;
 \end{lstlisting}
+
+\section{ApacheBench}
+\label{ap:apache-benchmark}
+
+ApacheBench \cite{apache-benchmark} were used to measure response times.
+The bullet list below contains a description of the command at the end of this section.
+
+\begin{itemize}
+  \item \texttt{-n} defines the number of times to send a request.
+  \item \texttt{-c} defines the number of concurrent request.
+  \item \texttt{-l} is used to allow responses of different sizes
+  \item \texttt{localhost} have to be changed to the IP or domain name of the web server.
+  \item The url contains two parameters, \texttt{q} and \texttt{size}.
+  \texttt{q} is the acutal search query and \texttt{size} defines the size of the search result.
+\end{itemize}
+
+\texttt{ab -n 10000 -c 10 -l http://localhost/expansion?q=sky+blue\&size=10}

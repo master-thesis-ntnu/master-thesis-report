@@ -15,6 +15,7 @@ The most interesting results are how much slower the query expansion is compared
 
 \subsection{Data Set}
 \label{sec:dataset}
+Both experiments use the data set described in this section.
 The data set consits of photo data gathered from the Flickr API\footnote{\url{https://www.flickr.com/services/api/}}.
 Flickr were chosen as the data source as tags have been found to provide strong data for query expansion \cite{ir-hashtag}.
 All the photos were retrieved using Flickr's endpoint for fetching the last published photos.
@@ -44,9 +45,8 @@ As a result more tags results in better data for the query expansion algorithm.
 \end{figure}
 
 \subsection{Lucene Experiment}
-The Lucene experiments starts to build the index with all the photo data.
-All the data indexed in the Lucene experiment can be seen in table \ref{tbl:lucene-field-types}.
-Even though only the tag field are used,
+All the data types indexed in the Lucene experiment can be seen in table \ref{tbl:lucene-field-types}.
+Even though only the tag field are used in the algorithm,
 more fields indexed to make the experiment closer to a real world application.
 \texttt{StringField} will be indexed as a single token,
 which is useful for aggregating or filtering on the field.
@@ -58,7 +58,7 @@ The reason for using \texttt{LongPoint} on a date is to make it efficient to ran
 \begin{table}[h!]
     \begin{tabular}{|l|l|}
     \hline
-    \textbf{Field}& \textbf{Type}                 \\ \hline
+    \textbf{Field} & \textbf{Type}      \\ \hline
     id           & StringField          \\ \hline
     title        & TextField            \\ \hline
     description  & TextField            \\ \hline
@@ -70,6 +70,14 @@ The reason for using \texttt{LongPoint} on a date is to make it efficient to ran
     \caption{Field types of every field used in the experiment.}
     \label{tbl:lucene-field-types}
 \end{table}
+
+A different performance metric is used for the Lucene experiment,
+as Lucene is a Java library and is not a complete framework with a REST API compared to Elasticsearch.
+The Lucene implementation is evaluated by measuring the time from the query is sent to index until the result is retrieved.
+This is not a real world experiment setup,
+but this evaluation is used to reveal how much slower the query expansion algorithm is compared to the baseline query.
+To retrieve an accurate measurement a Java method called \texttt{System.nanoTime()} is used.
+\texttt{System.nanoTime()} is the most precise method available in Java to measure elapsed time.
 
 \subsection{Elasticsearch Experiment}
 Most web applications today with a search field will have a web server and a search engine on the backend.
@@ -91,8 +99,6 @@ The backend consists of two main components, a web server and a search engine.
   \caption{Overview of the Elasticsearch experiment setup.}
   \label{fig:elasticsearch-experiment-setup}
 \end{figure}
-
-
 
 As web applications ofter use cloud providers, the tests also needed to be conducted using cloud providers.
 The requirement set for the cloud provider was: need to be videly used, have servers in Europe and provide VPS services.
@@ -137,8 +143,8 @@ To allow maximum CPU utilization, pm2 can be configured to spawn as many Node.js
 To test the implementation the Node.js web server implemented two different endpoints.
 One endpoint is used to test the query expansion plugin and the other is used to test a multi term query.
 
-\subsection{Performance Metrics}
-Evaluating the implementation is done by measuring the response time from a client sends the request to the response arrives.
+\subsubsection{Performance Metrics}
+Evaluating the Elasticsearch plugin is done by measuring the response time from a client sends the request to the response arrives.
 The response time can be broken down into two separate parts, latency and execution as shown in figure \ref{fig:latency-measurements}.
 In this thesis latency is defined as the time it takes for a signal to go from the client to the web server and back.
 Execution time is defined from the web server recieves a request from the client until the web server sends a response back to the client.
