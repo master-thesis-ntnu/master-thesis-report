@@ -1,7 +1,15 @@
 \section{Discussion}
 \label{sec:discussion}
+This master thesis goal is to explore how advanced techniques can be used to give more relevant search results using open source technologies,
+and at the same time deliver the results fast enough to be used with interactive applications.
+Elasticsearch were chosen as the platform have proven to scale to petabytes of data.
+However,
+implementing techniques like query expansion and be fast enough at the same time,
+requires the implementation to be done within Elasticsearch source code or as standalone plugins.
+Elasticsearch's official documentation \cite{elasticsearch-plugin-documentation} for developing plugins are limited.
+The documentation only describes the required setup and links to other open source plugins to learn how plugins are developed.
 On Elastic's offical website there is a discussion about devoloping plugins for Elasticsearch.
-The quote below is an answer from the Elastic developer Adrien Grand on wheter there exists an offical guide on how to develop Elasticsearch plugins \cite{elasticsearch-plugin-quote}.
+The quote below is an answer from the Elastic's Q\&A site by Elastic developer Adrien Grand on wheter there exists an offical guide on how to develop Elasticsearch plugins \cite{elasticsearch-plugin-quote}.
 
 \begin{quote}
   No, there is no guide about writing plugins and the API is actually quite unstable.
@@ -9,17 +17,40 @@ The quote below is an answer from the Elastic developer Adrien Grand on wheter t
   Some community membors have writter plugins by taking inspiration of existing plugins but we do not want to commit on a stable API for plugins as this might prevent us from improving other areas of elasticsearch.
 \end{quote}
 
+The answer from Grand indicates that Elastic will not develop an official support for Elasticsearch plugins in the near future.
+Recently Elastic released a beta version of their machine learning plugin,
+but this plugin contains closed source code and requires a license to use.
+Without more support from Elastic,
+it would become hard to continue to develop more advanced techniques to increase the relevancy of search results.
+
 The project report \cite{project-report} used aggregation to retrieve information.
 Aggregation have two important downsides,
 aggregations may consume a great deal of memory,
 and aggregations are approximations may not necessarily return the correct value.
-Another important downside described in the project report is that the aggregation may
-In the implementation described in this thesis the aggregations are removed
+An additional drawback decribed in the project report is that the aggregation might not retrieve all the terms mentioned in the top-k documents.
+With the implementation described in this thesis all terms in the top-k documents are guaranteed to be retrieved and considered in the query expansion.
+%[??] describe why this is the case
+% The aggregation only returned the top-k terms and not every one.
 
-- Talk about aggregation memory requirement from project report
+Section describes how the query expansion is 20 \% slower compared to the baseline query when the search result have 10 documents,
+and increases when the document count increases.
+20 \% slower is acceptable,
+but 100 \% is not.
+However,
+according to research by Google \cite{google-latency} it is more important to deliver search results fast than to have a larger search result.
 
-- How much slower is the results
+Both implementations have potential to become faster.
+Neither implementations have any kind of Java optimizations.
+The algorithm contains multiple loops of a considerable size,
+and in several of them a new object is created in each iteration.
+This may in many cases be inefficient as Java has a garbage collecter which have to clean up unused code.
+If the code were optimized with the garbage collector in mind the code would most likely be significant faster,
+especially when the search result size increases and thus the loop size in the algorithm.
 
-- Dont have personalized search in the same way as Rudihagen's master thesis
+%- Talk about aggregation memory requirement from project report
 
-- Google experiments shows that response times is more important compared to result size
+%- How much slower is the results
+
+%- Dont have personalized search in the same way as Rudihagen's master thesis
+
+%- Google experiments shows that response times is more important compared to result size

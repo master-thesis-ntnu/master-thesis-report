@@ -1,10 +1,39 @@
-\chapter{Conclusion \& Futher Work}
+\chapter{Conclusion \& Further Work}
 \label{ch:conclusion}
+This chapter discusses the query expansion plugin.
+Finally,
+possible improvements are described to further improve the performance in terms of response time and in terms of relevance.
 
 \section{Conclusion}
-- Promising results
-\section{Futher Work}
-- Elasticsearch plugin implementation is not a generic implementation
-- Query expansion with more features
-- Measure search relevance
-- Java optimizations
+This thesis is based on the work from Rudihagen's master thesis \cite{master-thesis} and project report by Lund \cite{project-report}.
+Rudihagen focused on how instant searches may be more personal and relevant for the user.
+Rudihagen's implementation had an significant drawback in that the response time were above 100 ms most of the time.
+The project report by Lund looked at how the number of round trips in Rudihagen's implementation may be decreased to achieve a lower response time.
+The implementation achieved a faster instant search,
+but the search were not personal in the same degree as the search implementation by Rudihagen.
+This thesis on the other hand,
+focuses on how an instant search can implement query expansion with pseudo-relevance in an open source search engine.
+
+Even though the results described in section \ref{sec:results} are promising there are a few important remarks to take note of.
+
+
+
+\section{Further Work}
+The query expansion plugin for Elasticsearch described in this thesis is not generic and will only work on the photo data from Flickr.
+Further development of the plugin would require the plugin to be generic and to work with any type of data.
+
+63 \% of the photos did not have any tags.
+Using the query expansion implementation described in this thesis none of the photos were present in any of the search results.
+To achieve a better search result the query expansion should also include other fields like the title and the header.
+Two additional features to explore would be geolocation and when the photo is taken.
+In other words,
+images taken closer to the user would be ranked higher and photos taken closer to the current time would aslo be ranked higher.
+However, there is no guarantee that geolocation and the photo's capture time would increase the relevance of the search results
+
+%- Elasticsearch plugin implementation is not a generic implementation
+
+%- Query expansion with more features
+
+%- Measure search relevance
+
+%- Java optimizations
