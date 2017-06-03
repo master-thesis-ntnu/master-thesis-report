@@ -1,9 +1,9 @@
-\section{Software}
-This section describs the software used in this master thesis.
-Lucene were used in the initial implementation of query expansion.
-The last experiment utilized Node.JS as the webserver and Elasticsearch as the search engine.
+\section{Underlying Technologies Used in the Implementation}
+This section outlines the different technologies used in the implementations.
+There were two separate implementations.
+One using the Lucene and one using Elasticsearch.
+Node.js were used as a part in the experiment with Elasticsearch.
 
-\subsection{Node.js}
 Node.js\footnote{\url{https://nodejs.org}} version 7 was chosen as the webserver.
 Node.js was chosen because the author has knowledge of the technology,
 and it contains a rich package manager called NPM.
@@ -13,10 +13,10 @@ Inside NodeJS lies the V8\footnote{\url{https://developers.google.com/v8/}} Java
 \subsection{Lucene}
 Lucene\footnote{\url{https://lucene.apache.org/}} is an open-source full-text search engine library written in Java.
 According to Lucene\footnote{\url{http://lucene.apache.org/core/}} the index size is only about 20-30\% of the original text.
-Lucene's search features features such as ranked search, field search and faceting, to mention a few.
+Lucene's search have features such as ranked search, field search and faceting, to mention a few.
 
 Lucene exposes the low level API's which gives very much control over the inner workings of Lucene.
-Table \ref{tbl:inverted-index} shows a low level data structure inside Lucene called an inverted index.
+Table \ref{tbl:inverted-index} shows an example of a low level data structure inside Lucene called an inverted index.
 The table contains a list of all the possible terms inside a text.
 The second column is the frequency each term has.
 Lastly, the documents column list all the documents where the given term occurs.
@@ -27,7 +27,8 @@ The query expansion which is used in this master thesis requires information sto
 To illustrate how the inverted index works, Lucene recieves a query for the terms \texttt{blue}.
 Using table \ref{tbl:inverted-index} the inverted index shows that the term has a frequency of three,
 and that the term occurs in document 1, 2 and 3.
-A search result would then return document 1, 2 and 3.
+The search result would then contain documents 1, 2 and 3.
+This is a simplified example and the exact inner workings of search engines are described in a later section.
 
 One important drawback with Lucene is that it is not scalable across multiple machines.
 However, scalable across multiple machines are on of the advantages of using Elasticsearch.
@@ -81,7 +82,7 @@ All nodes in a cluster is also an coordination node.
 \subsubsection{Sharding}
 The stored data in Elasticsearch may grow to become larger than the hardware on a single machine can handle,
 both in size and in number of requests.
-To mitigate the problem elasticsearch splits each index into multiple segments called shards.
+To mitigate the problem Elasticsearch splits each index into multiple segments called shards.
 Each of this shards may be distributed across multiple nodes.
 This leads to higher performance when indexing new documents and when searching the documents.
 The shards may also be duplicated to support higher query volumes and availability.
@@ -102,8 +103,10 @@ On the coordination node alle the retrieved metadata are used to calculate the g
 After the global result have been calculated,
 all the shards are then queried for the documents from the global result.
 After the documents are retrieved the result are returned back to the client.
-
-[?? mention that larger size value requires more work and thus slower search result]
+As the search result is increased, the response time will also increase.
+This is a result of more calculations on each shard,
+more data transfered,
+and more work to be done when merging the result.
 
 \begin{figure}[h]
   \centering
@@ -131,6 +134,7 @@ with the term frequencies 60, 32 and 22 respectively.
 With global knowledge both the frequencies and one of the top 3 terms have changed.
 
 The example explained above is exaggerated to illustrate what might happen in Elasticsearch's distributed architechture.
+As the number of documents increase the error smooths out and will be less likely to happen.
 Even though the result is not exact, it is good enough for most use cases.
 Elasticsearch can be configured to return more exact results,
 at the cost of longer response times.
