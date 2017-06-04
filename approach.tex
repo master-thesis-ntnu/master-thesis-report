@@ -1,8 +1,12 @@
 \chapter{Approach}
 \label{ch:approach}
-This chapter describes how the query expansion algorithm were implemented using Lucene and Elasticsearch.
+After implementing query expansion in the project report,
+the though were to implement query expansion directly into the search engine.
+As the Elasticsearch source code are poorly documented the choice were to implement query expansion with Lucene and then later port it into Elasticsearch.
+After the implementing query expansion using Lucene,
+Elasticsearch's documentation were inspected on how to make the implementation scalable.
+It were discovered that Elasticsearch has a plugin API which can be used to extend Elasticsearch's functionallity.
 
-- Why are there two experiments.
+This chapter gives an overview of the query expansion algorithm before the implementation with Lucene and Elasticsearch is explained.
 
-- Author discovered Elasticsearch's plugin API after implementing query expansion in lucene after looking into how to move the implementation into Elasticsearch.
 \input{approach/implementation}

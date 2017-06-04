@@ -47,10 +47,19 @@ This may in many cases be inefficient as Java has a garbage collecter which have
 If the code were optimized with the garbage collector in mind the code would most likely be significant faster,
 especially when the search result size increases and thus the loop size in the algorithm.
 
-%- Talk about aggregation memory requirement from project report
+- Talk about aggregation memory requirement from project report
 
-%- How much slower is the results
+- How much slower is the results
 
-%- Dont have personalized search in the same way as Rudihagen's master thesis
+- Dont have personalized search in the same way as Rudihagen's master thesis
 
-%- Google experiments shows that response times is more important compared to result size
+- Google experiments shows that response times is more important compared to result size
+
+- could use a single request to fetch all the needed data instead of many small ones
+
+- On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
+but as the term information is stored it is only necessary when a new term appears.
+
+- The information about how many times a term appears in the collection are retrieved from the search engine.
+
+- The number of search engine accesses depends on the number of unique terms in the top-k documents.

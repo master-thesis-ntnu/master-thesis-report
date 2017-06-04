@@ -8,6 +8,21 @@ The query expansion plugin for Elasticsearch is almost identical to the implemen
 Thus, this subsection will only describe the differences.
 The differences is mostly how the documents are indexed and how the queries are structured.
 
+Figure \ref{fig:sequence-diagram-elasticsearch} displays the sequence diagram for the implemented Elasticsearch plugin.
+First the query arrives the coordination node in the Elasticsearch cluster.
+The query is parsed and distributed to all the relevant shards.
+Each uses the plugin to calculate their local top-k documents.
+Metadata of each shard is returned to the coordination node,
+which again merges the results and calculates the global top-k documents.
+Lastly,
+the actual documents are retrieved from all the shards and the final result are returned.
+
+\begin{figure}[h!]
+  \centering \includegraphics[width=1\linewidth]{img/sequence-diagram-elasticsearch.png}
+  \caption{Sequence diagram for the Elasticsearch implementation.}
+  \label{fig:sequence-diagram-elasticsearch}
+\end{figure}
+
 \subsubsection{Elasticsearch Plugin API}
 Elasticsearch has it's own plugin API\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/plugins/5.2/index.html}}.
 This plugin API can be used to extend Elasticsearch's index and query capabilities.
@@ -35,7 +50,7 @@ The terms are extracted by spliting the query string on the character "space".
 
 \begin{lstlisting}[language=json, caption={The POST request body for the implemented query expansion.}, label={lst:rest-api-extension}]
 {
-  "search_query": "blue sky"
+  "search_query": "search terms"
 }
 \end{lstlisting}
 
@@ -55,12 +70,6 @@ The terms are extracted by spliting the query string on the character "space".
 - Describe REST listener
 
 - Describe the configration required to create an Elasticsearch plugin
-
-\begin{figure}[h!]
-\centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-elasticsearch.png}
-\caption{Sequence diagram for the Elasticsearch implementation.}
-\label{fig:sequence-diagram-lucene}
-\end{figure}
 
 \subsubsection{Indexing}
 Many storage solutions requires the stored data types to be defined before inserting data.
@@ -121,7 +130,3 @@ for retrieving metadata from the inverted index.
   }
 }
 \end{lstlisting}
-
-- Count API
-- Maybe faster to use one big request
--

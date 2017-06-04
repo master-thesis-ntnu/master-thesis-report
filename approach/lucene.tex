@@ -2,11 +2,6 @@
 \label{sec:lucene}
 This subsection describes how query expansion were implemented using the Apache Lucene java library.
 The Lucene implementation were done using version 6.4.0 of Lucene \cite{lucene-documentation}.
-To avoid Lucene using the disk the index were kept in memory,
-which implemented by utilizing a class in Lucene called \texttt{RAMDirectory}. [?? wrong change this]
-
-There may be possible to achieve better performance by implementing Java optimizations,
-but that is outside the scope of this master thesis and were thus never investigated.
 
 \subsubsection{Indexing}
 Lucene have multiple data types which may be stored,
@@ -15,11 +10,11 @@ All the photo tags were indexed using the \texttt{TextField}.
 The two fields \texttt{TextField} and \texttt{StringField} are quite similar,
 but have some important differences.
 Listing \ref{lst:lucene-string-field} displays the \texttt{StringField} configuration code from Lucene's Github repository\footnote{\url{https://github.com/apache/lucene-solr/blob/master/lucene/core/src/java/org/apache/lucene/document/StringField.java}}.
-The first function \texttt{setIndexOptions(IndexOptions.DOCS)},
+The first function \texttt{setIndexOptions( IndexOptions.DOCS )},
 configures the inverted index to only store which documents contains the term.
 Term frequencies and vector are not stored with this option.
-\texttt{setStored(true)} tells the Lucene index to store the original value.
-Lastly, the function \texttt{setTokenized(false)} informs Lucene to store the string value as a single token.
+\texttt{setStored( true )} tells the Lucene index to store the original value.
+Lastly, the function \texttt{setTokenized( false )} informs Lucene to store the string value as a single token.
 
 \begin{lstlisting}[language=java, caption={Lucene's \texttt{StringField} index configuration.}, label={lst:lucene-string-field}]
   setStored(true);

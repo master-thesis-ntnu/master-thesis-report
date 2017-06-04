@@ -2,6 +2,7 @@
 \label{sec:algorithm}
 The algorithm used for query expansion is equal on both platforms,
 but they have some platfroms specific differences which are explained in their respective subsections.
+The algorithm is available as pseudocode in appendix \ref{ap:pseudocode}.
 
 The algorithm starts by sending a term search to the search engine.
 The result from the initial search are often reffered to as top-k documents,
@@ -34,31 +35,7 @@ Lastly, the expanded terms are used in a new term search.
 The search engine are queried for the terms,
 and the result from the search are returned directly back to the client without any modifications.
 
-\begin{algorithm}
-  \begin{algorithmic}
-    \Require{Search terms from the user is defined as $searchTerms$}
-    \State $initialSearchResult \gets \Call{termsSearch}{searchTerms}$
-    \State $termsData \gets [ ]$
-    \State $sortedTerms \gets [ ]$
-
-    \For {$photos$ in $initialSearchResult$}
-      \For {$term$ in photos}
-        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
-        \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
-        \State \Call{insertTermsData}{term, numberOfTimesInCollection, numberOfTermsInCollection}
-      \EndFor
-    \EndFor
-    \For {$term$ in $termsData$}
-      \State $\Call{calulate}$
-      \Call{insertTerm}{sortedTerms, term}
-    \EndFor
-
-  \end{algorithmic}
-  \caption{Algorithm used in the Lucene implementation.}
-\end{algorithm}
-
 \subsubsection{Algorithm Complexity}
-[?? maybe move to evaluation]
 An important aspect of every algorithm is to analyze its complexity.
 The algorithm explained in \ref{sec:algorithm} have two different inputs we have to consider.
 Firstly the number of terms in top-k documents, and secondly the number of unique terms.
@@ -78,7 +55,7 @@ $T$ is the numbor of tags and $U$ is the number of unique terms.
 
 \begin{cequation}[H]
 	\begin{equation}
-		\mathbf{f(T, U)} = T + U + U\log{}U \\
+		\mathbf{ f(T, U) } = \mathcal{O}( T + U + U\log{}U ) \\
 	\end{equation}
   \caption{Algorithm complexity for the algorithm explained in subsection \ref{sec:algorithm}.}
   \label{eq:algorithm-complexity}
@@ -101,10 +78,3 @@ $T$ is the numbor of tags and $U$ is the number of unique terms.
 %  \caption{Algorithm complexity for the an improved version of the algorithm described in subsection \ref{sec:algorithm}.}
 %  \label{eq:algorithm-improved}
 %\end{cequation}
-
-
-- could use a single request to fetch all the needed data instead of many small ones
-- On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
-but as the term information is stored it is only necessary when a new term appears.
-- The information about how many times a term appears in the collection are retrieved from the search engine.
-- The number of search engine accesses depends on the number of unique terms in the top-k documents.
