@@ -1,30 +1,27 @@
-%\section{Research Question Evaluation}
-%\label{sec:reasearch-questions-evaluation}
-%\begin{enumerate}
-  %\item How to provide instant personalized recommendations on a cold start based on the query typed?
-%  \item \textbf{How to achieve more relevant search results based on a query from a user?} \newline
-%  As mentioned in section \ref{sec:problem-specification} the main focus areas were scaling and latency.
-%  Therefore, the relevance was never measured.
-%  Based on the work by Rudihagen,
-%  this thesis assumes that query expansion returns more relevant results compared to the baseline search.
+\section{Research Question Evaluation}
+\label{sec:reasearch-questions-evaluation}
+The following list contains a discussion of the research questions from chapter \ref{ch:introduction}.
 
-%  \item\label{rq:scaling} \textbf{How to make the search recommandation scale with an increasing amount of data?} \newline
-%  As mentioned earlier, Elasticsearch is proven to scale to petabytes of data \cite{elasticsearch-scale},
-%  if configured correctly, and was thus used as the search engine for this project report.
-%  Rudihagen's implementation also used Elasticsearch, and was configured with one index for each user.
-%  This configuration is fine for most cases, but according to the documentation this does not scale well if you have a large user base \cite{elasticsearch-indices}.
+\begin{enumerate}
+  \item \textbf{How to make an improved search in terms of relevance compared to TF-IDF?}
+  As mentioned in section \ref{sec:problem-specification} the main focus areas were scaling and latency.
+  Therefore, the relevance was never measured.
+  Based on the work by Rudihagen,
+  this thesis assumes that query expansion returns more relevant results compared to the baseline search.
 
-%  Elasticsearch require proper tuning and configuration.
-%  Without testing the solution on a large data we cannot conclude that the implementation would scale,
-%  but the current implementation have potential to scale.
+  \item \textbf{How to develop an improved search which scales with an increasing amount of data?}
+  The Elasticsearch plugin were tested with a index size of 2.3 GB,
+  which is not an extreme data size in todays measure.
+  The query expansion plugin were about 20 \% slower compared to the baseline search.
+  As Elasticsearch have proven to scale to petabytes of data \cite{elasticsearch-scale} together with good results described earlier in this chapter,
+  we can assume that the plugin would be able to scale on a larger Elasticsearch cluster.
 
-%  \item\label{rq:latency} \textbf{How to implement techniques to deliver more relevant search results and at the same time fulfill the interactive requirements?} \newline
-%  The results described in section \ref{sec:results} shows that the query expansion plugin for Elasticsearch is well within the limit for interactive applications.
-%  With a search result size of 10 the
-%  From the results we can see that the implementation are delivering results in about 16 ms, in a test environment.
-%  However, the query expansion implementation has a latency which is about 2 times greater than the baseline.
-%  For real world use cases, this might exceed the latency to above the interactivity limit.
-%\end{enumerate}
 
-% \section{Notes}
-% - Show example results. Same query, but one with query expansion and one without.
+  \item \textbf{How to delevop an improved search that fulfills the interactive latency requirements?}
+  The results shows that the implementation is well within the limit for interactive tasks.
+  Even when the search result size increases to 200 documents,
+  the search is delivered within 54 ms on average.
+  All the tests were conducted on a setup close to a real world web application,
+  which indicates that the implementation also would work on an actual web application.
+
+\end{enumerate}

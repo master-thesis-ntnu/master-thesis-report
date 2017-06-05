@@ -23,8 +23,6 @@ When the result size contains 10 results query expansion is more than 3 times sl
 and it increases to more than 5 times slower when the result size is 200.
 This means that the response times are increasing faster with query expansion compared to the baseline query.
 
-[?? run the results without using the computer to get more reliable results]
-
 \begin{figure}[h!]
   \centering \includegraphics[width=1\linewidth]{img/lucene-results.png}
   \caption{Response times from the Lucene implementation with varying result size.}
@@ -56,7 +54,8 @@ The difference between the two graphs are so small that they barely is visible.
 Lucene requires a fair amount of requests before the caches are optimized,
 but as the tests are done 10,000 the initial slower requests are level out.
 At a result size of 10, query expansion is 20 \% slower compared to the base line query,
-and increases to about 205 \% slower when the search result have a size of 200 documents.
+and increases to about 250 \% slower with a search result size of 120.
+After that point the query expansion implementation decreases to 205 \% with a search result size of 200.
 
 \begin{figure}[h!]
   \centering \includegraphics[width=1\linewidth]{img/result-vary-result-size.png}

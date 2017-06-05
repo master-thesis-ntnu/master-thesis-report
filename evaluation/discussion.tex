@@ -1,8 +1,16 @@
 \section{Discussion}
 \label{sec:discussion}
-This master thesis goal is to explore how advanced techniques can be used to give more relevant search results using open source technologies,
+This thesis goal is to explore how advanced techniques can be used to give more relevant search results using an open source search engine,
 and at the same time deliver the results fast enough to be used with interactive applications.
-Elasticsearch were chosen as the platform have proven to scale to petabytes of data.
+The results in the previous section show that both the Elasticsearch and the Lucene implementation have a linear increase in response time,
+compared to the baseline test.
+The difference between the baseline test and the query expansion in both implementations peaked when the search result had 120-130 documents.
+When the search result size increased even further the difference decreased on both experiments.
+This shows that the implementation scales on both implementations.
+Even though the query expansion implementation is slower compared to the baseline,
+the results are well within the interactive requirement of 100 ms.
+
+Elasticsearch were chosen as the platform have proven to scale to petabytes of data \cite{elasticsearch-scale}.
 However,
 implementing techniques like query expansion and be fast enough at the same time,
 requires the implementation to be done within Elasticsearch source code or as standalone plugins.
@@ -27,39 +35,40 @@ The project report \cite{project-report} used aggregation to retrieve informatio
 Aggregation have two important downsides,
 aggregations may consume a great deal of memory,
 and aggregations are approximations may not necessarily return the correct value.
-An additional drawback decribed in the project report is that the aggregation might not retrieve all the terms mentioned in the top-k documents.
+An additional remark decribed in the project report is that the aggregation might not retrieve all the terms mentioned in the top-k documents.
 With the implementation described in this thesis all terms in the top-k documents are guaranteed to be retrieved and considered in the query expansion.
-%[??] describe why this is the case
-% The aggregation only returned the top-k terms and not every one.
+The aggregation query were needed to retrieve the number of times a term appeares in the complete collection.
+In the Elasticsearch plugin this query is replaced by a single term query,
+which returns the exact number of hits.
+The downside of this approach beeing that the query have to be executed for each unique term in the top-k documents.
 
-Section describes how the query expansion is 20 \% slower compared to the baseline query when the search result have 10 documents,
-and increases when the document count increases.
-20 \% slower is acceptable,
-but 100 \% is not.
-However,
-according to research by Google \cite{google-latency} it is more important to deliver search results fast than to have a larger search result.
-
-Both implementations have potential to become faster.
-Neither implementations have any kind of Java optimizations.
-The algorithm contains multiple loops of a considerable size,
-and in several of them a new object is created in each iteration.
-This may in many cases be inefficient as Java has a garbage collecter which have to clean up unused code.
+Both implementations have potential to become faster, by optiziming the Java code.
+An example of an optimization would be looking at the loops.
+Some of the loops creates new objects on each iteration instead of reusing one object.
+This may in many cases be inefficient as Java has a garbage collecter which have to clean up the old objects after each iteration.
 If the code were optimized with the garbage collector in mind the code would most likely be significant faster,
 especially when the search result size increases and thus the loop size in the algorithm.
+Java optimizations is outside the scope of this master thesis and thus never a focus during the implementation.
 
-- Talk about aggregation memory requirement from project report
+In Rudihagen's implementation of query expansion had a total of 4 round trips between the web server, the database and the search engine.
+In my project report I was able to reduce the round trips to two times.
+Implementing an Elasticsearch plugin were able to change the number of round trips to only one.
+Even though the same amount of work is done, all the work is done on the search engine itself.
+As a result,
+the response times are greatly improved by removing round trips and essentially removing unnecessary latency.
+Rudihagen measured response times between 150 - 600 ms which is well above the requirement for interactive tasks.
+The average measured response times in this thesis ranged from 12 ms to 54 ms depending on the result size.
+These results are within the requirement of 100 ms.
 
-- How much slower is the results
 
-- Dont have personalized search in the same way as Rudihagen's master thesis
 
-- Google experiments shows that response times is more important compared to result size
+% - Google experiments shows that response times is more important compared to result size
 
-- could use a single request to fetch all the needed data instead of many small ones
+%- could use a single request to fetch all the needed data instead of many small ones
 
-- On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
-but as the term information is stored it is only necessary when a new term appears.
+%- On each iteration a search engine lookup is necessary to retrieve the number of times a certain term appears in the whole collection,
+%but as the term information is stored it is only necessary when a new term appears.
 
-- The information about how many times a term appears in the collection are retrieved from the search engine.
+%- The information about how many times a term appears in the collection are retrieved from the search engine.
 
-- The number of search engine accesses depends on the number of unique terms in the top-k documents.
+%- The number of search engine accesses depends on the number of unique terms in the top-k documents.
