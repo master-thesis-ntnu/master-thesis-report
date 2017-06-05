@@ -1,4 +1,4 @@
-\subsection{Elasticsearch Architecture}
+\subsection{Elasticsearch Implementation}
 To achieve scalability across multiple machines,
 the second implementation of query expansion was done using Elasticsearch.
 The initial thought was to implement query expansion directly into Elasticsearch's core.
@@ -24,6 +24,7 @@ the actual documents are retrieved from all the shards and the final result are 
 \end{figure}
 
 \subsubsection{Elasticsearch Plugin API}
+\label{sec:elasticsearch-plugin-api}
 Elasticsearch has it's own plugin API\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/plugins/5.2/index.html}}.
 This plugin API can be used to extend Elasticsearch's index and query capabilities.
 The implementation described in this master thesis creates a plugin which extends the REST API with query expansion.
@@ -38,6 +39,7 @@ the installation are distributed to all the nodes.
 As the installation is distributed,
 all the nodes are able to act as a coordination node,
 which also makes the plugin API scalable.
+The plugin implementation described in this thesis belongs to the community contributed plugins.
 
 Accessing the extended REST API is done sending a POST request to the URL \url{http://localhost:9200/_expansion}.
 This URL assumes that the server is running locally and that Elasticsearch's default port 9200 is used.
@@ -53,23 +55,6 @@ The terms are extracted by spliting the query string on the character "space".
   "search_query": "search terms"
 }
 \end{lstlisting}
-
-\subsubsection{Elasticsearch Notes}
-- The implementation decribed in this report belongs to the community contributed plugins.
-
-- The implemented plugin extends the current Elasticsearch REST API.
-
-- Architecture with Elasticsearch.
-
-- Elasticsearch plugin to extend the Elasticsearch API.
-
-- Elasticsearch plugin functionality
-
-- Elasticsearch queries in java which are used
-
-- Describe REST listener
-
-- Describe the configration required to create an Elasticsearch plugin
 
 \subsubsection{Indexing}
 Many storage solutions requires the stored data types to be defined before inserting data.
@@ -130,3 +115,21 @@ for retrieving metadata from the inverted index.
   }
 }
 \end{lstlisting}
+
+\subsubsection{Architecture}
+The architecture of the implementation can be seen in figure \ref{fig:elasticsearch-architecture}.
+As described earlier,
+the query first arrives a coordination node before it is parsed and sent to the data nodes in the cluster.
+Node 2 is enlagred to display what this master thesis have implemented.
+In figure \ref{fig:elasticsearch-architecture} the node contains a plugin called "Query Expansion,"
+together with data called shard 1 and replica 1.
+When a request of a certtain format arrives the plugin handles the request.
+The format is explained in section \ref{sec:elasticsearch-plugin-api}.
+After the plugin have calculated the top-k documents the result is returned back to the coordination node,
+and later returned to the client.
+
+\begin{figure}[h!]
+  \centering \includegraphics[width=1\linewidth]{img/elasticsearch-architecture.png}
+  \caption{Architecture for the implemented Elasticsearch plugin. The figure is an example of a cluster setup with a view inside one of the node in the cluster.}
+  \label{fig:elasticsearch-architecture}
+\end{figure}
