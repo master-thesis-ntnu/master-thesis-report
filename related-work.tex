@@ -51,34 +51,33 @@ The implementation without query expansion is used as a baseline.
 The query expansion implementation had a latency increase of about 2 times compared the baseline implementation.
 In a real world environment the increased latency may exceed the 100 ms interactive requirement.
 
-\subsection{Instant Personalized Search Recommandation}
-As mentioned, this project report builds on and extends the work by Rudihagen \cite{master-thesis}.
-His reseach focused on personalizing app recommandations to achieve better recommandations compared to returning the most popular results (popular meaning most downloaded).
-The implemented recommandation engine returned promising results, but had a few shortcommings in terms of latency, scalability and test data size.
+%\subsection{Instant Personalized Search Recommandation}
+%As mentioned, this project report builds on and extends the work by Rudihagen \cite{master-thesis}.
+%His reseach focused on personalizing app recommandations to achieve better recommandations compared to returning the most popular results (popular meaning most downloaded).
+%The implemented recommandation engine returned promising results, but had a few shortcommings in terms of latency, scalability and test data size.
 
-\begin{itemize}
-  \item The implemented solution experienced a latency of up to 600 ms with some queries.
-  \item Each user had their own index in Elasticsearch, which does not scale well.
-  \item The data set contained data from 46 different users.
-\end{itemize}
+%\begin{itemize}
+  %\item The implemented solution experienced a latency of up to 600 ms with some queries.
+  %\item Each user had their own index in Elasticsearch, which does not scale well.
+  %\item The data set contained data from 46 different users.
+%\end{itemize}
 
-This project report aims at exploring the possibility to reduce the search latency to less than 100 ms mark, and how to structure data to scale better.
-Based on the work by Rudihagen,
-the implementation explained in chapter \ref{ch:approach} assumes that pseudo-relevance feedback returns relevant results.
+%This project report aims at exploring the possibility to reduce the search latency to less than 100 ms mark, and how to structure data to scale better.
+%Based on the work by Rudihagen,
+%the implementation explained in chapter \ref{ch:approach} assumes that pseudo-relevance feedback returns relevant results.
 
-\section{Related Work}
+\section{Other Work}
+The following section outlines other related research which have been done to deliver more relevant search results.
+
+\subsection{Query Dependent Pseudo-Relevance Feedback Based on Wikipedia}
 Pseudo-relevance feedback uses information from the top-k documents to compute query expansion terms.
 However, the top-k documents are not always relevant and may introduce noise to the data set.
-
-\textit{Query Dependent Pseudo-Relevance Feedback based on Wikipedia} explores query dependent expansion on data from Wikipedia.
+\textit{Query Dependent Pseudo-Relevance Feedback based on Wikipedia} explores query dependent expansion on data from Wikipedia \cite{pseudo-relevance-wikipedia}.
 In the paper they found that different field weights had a significant impact on the precision performance.
 From the results they found high weights on the fields, "Links" and "Content" to yield very good results.
 Increasing the weights on the "Overview" field decreased precision results.
 The research explored three different methods for query expansion:
-relevance model, strategy for entity/ambiguous queries and field evidence for query expansion \cite{pseudo-relevance-wikipedia}.
-
-\section{Other Work}
-The following section outlines other related research which have been done to deliver more relevant search results.
+relevance model, strategy for entity/ambiguous queries and field evidence for query expansion.
 
 \subsection{Fuzzy Search}
 With a standard term search, the user has to spell the term correctly as a misspelled term will most likely yield no or few results.
