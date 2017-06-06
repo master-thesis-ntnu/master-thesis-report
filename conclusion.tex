@@ -1,22 +1,25 @@
 \chapter{Conclusion \& Further Work}
 \label{ch:conclusion}
 This chapter discusses the query expansion plugin.
-Finally,
+Lastly,
 possible improvements are described to further improve the performance in terms of response time and in terms of relevance.
 
 \section{Conclusion}
-This thesis is based on the work from Rudihagen's master thesis \cite{master-thesis} and project report by Lund \cite{project-report}.
+This thesis is based on the work from Rudihagen's master thesis \cite{master-thesis} and my project report \cite{project-report}.
 Rudihagen focused on how instant searches may be more personal and relevant for the user.
-Rudihagen's implementation had an significant drawback in that the response time were above 100 ms most of the time.
-The project report by Lund looked at how the number of round trips in Rudihagen's implementation may be decreased to achieve a lower response time.
+Rudihagen's implementation had an significant drawback in that the response time were above 100 ms.
+My project report looked at how the number of round trips in Rudihagen's implementation may be decreased to achieve a lower response time.
+By reducing the number of round trips to two rounds the latency were significantly descreased.
+In this thesis the query expansion algorithm were moved from the web server to the search engine,
+and ultimatly the round trips were changed to one.
 The implementation achieved a faster instant search,
 but the search were not personal in the same degree as the search implementation by Rudihagen.
 This thesis on the other hand,
 focuses on how an instant search can implement query expansion with pseudo-relevance in an open source search engine.
 
-Even though the results described in section \ref{sec:results} are promising there are a few important remarks to take note of.
+% Even though the results described in section \ref{sec:results} are promising there are a few important remarks to take note of.
 
-
+Even though the experiment setup were done in a
 
 \section{Further Work}
 The query expansion plugin for Elasticsearch described in this thesis is not generic and will only work on the photo data from Flickr.
