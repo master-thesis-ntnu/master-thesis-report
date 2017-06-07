@@ -1,10 +1,21 @@
 \chapter{Conclusion \& Further Work}
 \label{ch:conclusion}
-This chapter discusses the query expansion plugin.
+This chapter discusses the query expansion plugin and compares the implemenation to the work by Rudihagen.
 Lastly,
 possible improvements are described to further improve the performance in terms of response time and in terms of relevance.
 
 \section{Conclusion}
+This thesis investigates how to implement algorithms to improve the relevance of search results compared to a search using TF-IDF.
+The final implementation is a proof of concept of whether techniques like query expansion can be implement on an open source search engine,
+and at the same time deliver search result instantaneously.
+The experiment setup is close to a real world web application,
+with both the web server and the search engine is hosted by a cloud provider.
+During the experiment a laptop were used to measure the response times.
+The experiment is close to what a user would expect using a website,
+but there are two things the experiment does not take into account.
+Firstly, web browser introduces some overhead to render the results.
+Secondly, an actual website would most likely have more than one user.
+
 This thesis is based on the work from Rudihagen's master thesis \cite{master-thesis} and my project report \cite{project-report}.
 Rudihagen focused on how instant searches may be more personal and relevant for the user.
 Rudihagen's implementation had an significant drawback in that the response time were above 100 ms.
@@ -12,14 +23,19 @@ My project report looked at how the number of round trips in Rudihagen's impleme
 By reducing the number of round trips to two rounds the latency were significantly descreased.
 In this thesis the query expansion algorithm were moved from the web server to the search engine,
 and ultimatly the round trips were changed to one.
-The implementation achieved a faster instant search,
-but the search were not personal in the same degree as the search implementation by Rudihagen.
-This thesis on the other hand,
-focuses on how an instant search can implement query expansion with pseudo-relevance in an open source search engine.
+There is one important difference between the implementation described in this thesis compared to the work by Rudihagen.
+Rudighagen implemented a personalized search, which means that different users with the same search may recieve different searh results.
+In this thesis the same query by different users will result in the same search results.
 
-% Even though the results described in section \ref{sec:results} are promising there are a few important remarks to take note of.
-
-Even though the experiment setup were done in a
+The results shows that the increased response time increases linearly.
+From the results we can conclude that the query expansion plugin would most likely scale with increasing amounts of data.
+Before using the plugin in production it is recommended that the plugin implements Java specific optimizations.
+The company behind Elasticsearch have no plans to create official guide to develop plugins for Elasticsearch.
+This makes further developments of plugins demanding without proper documentation.
+Even though the code for Elasticsearch is open source,
+there are no official documentation on how the code is structured.
+This makes further development challenging.
+As a result the author of this thesis is uncertain whether Elasticsearch is a suggested platform to implement more advanced search techniques.
 
 \section{Further Work}
 The query expansion plugin for Elasticsearch described in this thesis is not generic and will only work on the photo data from Flickr.
@@ -33,6 +49,12 @@ In other words,
 images taken closer to the user would be ranked higher and photos taken closer to the current time would aslo be ranked higher.
 However, there is no guarantee that geolocation and the photo's capture time would increase the relevance of the search results
 
+The query expansion plugin have room for improvements when it comes to Java optimizations.
+Java is a language were the Java Virtual Machine takes care of memory management for the programmer using a garbagde collector.
+Even though the programmer does not have to manually to memory management,
+the program can minimize the need for garbage collection.
+
+
 %- Elasticsearch plugin implementation is not a generic implementation
 
 %- Query expansion with more features
@@ -40,3 +62,4 @@ However, there is no guarantee that geolocation and the photo's capture time wou
 %- Measure search relevance
 
 %- Java optimizations
+%- Maybe do tests with even larger data sets?
