@@ -1,6 +1,5 @@
 \section{Query Expansion}
 \label{sec:query-expansion}
-
 When a user searches using the query "Super Bowl" the day after the sport event has taken place,
 it is likely that the user wants information about the event from the previous day.
 The query "Super Bowl" is likely to also return documents from previous years.
@@ -12,6 +11,7 @@ This technique is called query expansion.
 The idea behind query expansion is to add more terms to the user's query, and then use the extended query on the search engine.
 According to literature, a query expanded search does improve the results \cite[ch. 5]{ir-book}.
 Even though research shows promising results, query expansions require explicit information which in practice often is difficult to acquire.
+In a free text search users expect to automatically recieve search results without having to answer questions or to filter the result to provide query expansion data.
 On the other hand, according to Efron \cite{ir-hashtag}, hashtags provide an excellent way to acquire the explicit information needed for query expansion.
 
 There are different methods of query expansion, and this report describes one technique called Kullback-Leibler divergence.
@@ -19,7 +19,7 @@ The implementation is described in chapter \ref{ch:approach}.
 
 \subsection{Kullback-Leibler Divergence}
 \textit{Kullback-Leibler divergence} (KL) measures how well distribution P(t) represents the distribution Q(t).
-The variables in distribution P(t) and Q(t) is explained in the bullet points bellow.
+The variables in distribution P(t) and Q(t) are explained in the bullet points bellow.
 
 \begin{itemize}
 	\item \textit{numberOfTimesInTopKDocuments} is the number of times a term is present in the top-k documents
@@ -63,10 +63,10 @@ Computing the Kullback-Leibler divergence for a term is given by equation \ref{e
 \subsubsection{Kullback-Leibler Divergence Example}
 To illustrate how KL score is calculated, an example for the search term "sky" is displayed.
 The expanded query may consist of up to 5 terms.
-To keep this example short, only the top 5 terms is calculated and the term "sky" is excluded from the calculations.
+To keep this example short, only the top 5 terms are calculated and the term "sky" is excluded from the calculations.
 
 Table \ref{tbl:kl-counts} contains information extracted using the data set described in section \ref{sec:dataset}.
-Using equation \ref{eq:kl-divergence} and the information in table \ref{tbl:kl-counts}, the KL score for each term are calculated and is shown in table \ref{tbl:kl-score}.
+Using equation \ref{eq:kl-divergence} and the information in table \ref{tbl:kl-counts}, the KL score for each term is calculated and is shown in table \ref{tbl:kl-score}.
 The table \ref{tbl:kl-score} lists the terms descending according to their score.
 From the original query we have the term "sky" and we may use 4 additional terms to complete the expansion.
 The top 4 terms are "clouds", "2016", "blue" and "water",
