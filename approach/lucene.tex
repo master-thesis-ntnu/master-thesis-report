@@ -1,17 +1,17 @@
 \subsection{Lucene Implementation}
 \label{sec:lucene}
-This subsection describes how query expansion were implemented using the Apache Lucene java library.
-The Lucene implementation were done using version 6.4.0 of Lucene \cite{lucene-documentation}.
+This subsection describes how query expansion was implemented using the Apache Lucene java library.
+The Lucene implementation was done using version 6.4.0 of Lucene \cite{lucene-documentation}.
 
 \subsubsection{Indexing}
-Lucene have multiple data types which may be stored,
+Lucene has multiple data types which may be stored,
 but the types used in this implementation were \texttt{StringField}, \texttt{LongPoint} and \texttt{TextField}.
 All the photo tags were indexed using the \texttt{TextField}.
 The two fields \texttt{TextField} and \texttt{StringField} are quite similar,
 but have some important differences.
 Listing \ref{lst:lucene-string-field} displays the \texttt{StringField} configuration code from Lucene's Github repository\footnote{\url{https://github.com/apache/lucene-solr/blob/master/lucene/core/src/java/org/apache/lucene/document/StringField.java}}.
 The first function \texttt{setIndexOptions( IndexOptions.DOCS )},
-configures the inverted index to only store which documents contains the term.
+configures the inverted index to only store the documents containing the term.
 Term frequencies and vector are not stored with this option.
 \texttt{setStored( true )} tells the Lucene index to store the original value.
 Lastly, the function \texttt{setTokenized( false )} informs Lucene to store the string value as a single token.
@@ -25,9 +25,9 @@ Lastly, the function \texttt{setTokenized( false )} informs Lucene to store the 
 Listing \ref{lst:lucene-text-field} shows the \texttt{TextField} configuration code from Lucene's Github repository\footnote{\url{https://github.com/apache/lucene-solr/blob/master/lucene/core/src/java/org/apache/lucene/document/StringField.java}}.
 The difference between the \texttt{StringField} and the \texttt{TextField} code are line two and three.
 \texttt{setTokenized(true)} tells the Lucene analyzer emit a token for each word in the given string.
-Most important is line three which tells Lucene to store data about which documents contains a given term,
-a given terms frequncy in each document and the terms position in the original text.
-Calculating the KL-score of a term requires the terms total frequency across all documents.
+Most important is line three which tells Lucene to store data about what documents contain a given term,
+a given terms frequency in each document and the term's position in the original text.
+Calculating the KL-score of a term requires the term's total frequency across all documents.
 
 \begin{lstlisting}[language=java, caption={Lucene's \texttt{TextField} index configuration.}, label={lst:lucene-text-field}]
     setStored(true);
@@ -47,10 +47,10 @@ this information may be retrieved directly from the inverted index.
 The function \texttt{totalTermFreq} from the class \texttt{IndexReader} returns the number of times a term is present across all documents.
 The inverted index also holds information about the total number of terms in the collection.
 This number is retrieved by using the function \texttt{getSumTotalTermFreq} from the same \texttt{IndexReader} class.
-After all the necessary information have been gathered the KL-score is calculated,
+After all the necessary information has been gathered the KL-score is calculated,
 and the new expanded search terms are generated.
-Finally, the multi term search are sent to the index.
-The final result are then returned back to the client.
+Finally, the multi term search is sent to the index.
+The final result is then returned back to the client.
 
 \begin{figure}[h!]
   \centering \includegraphics[width=0.9\linewidth]{img/sequence-diagram-lucene.png}

@@ -1,57 +1,57 @@
 \subsection{Algorithm}
 \label{sec:algorithm}
 The algorithm used for query expansion is equal on both platforms,
-but they have some platfroms specific differences which are explained in their respective subsections.
+but they have some platform specific differences which are explained in their respective subsections.
 The algorithm is available as pseudocode in appendix \ref{ap:pseudocode}.
 
 The algorithm starts by sending a term search to the search engine.
-The result from the initial search are often reffered to as top-k documents,
+The result from the initial search is often referred to as top-k documents,
 where k stands from the number of documents in the results.
 The photos from the result are then looped through to extract all the terms.
-Each term is stored in an hash map for fast retrieval.
-On every iteration the term are checked against the hash map.
+Each term is stored in a hash map for fast retrieval.
+On every iteration the term is checked against the hash map.
 If the term does not exists,
 the term is added to the hash map.
 The key is the hash map itself,
 and the value is an object which stores information about the total number of times the term occurs in the whole collection,
 the total number of terms in total in the collection and the number of times the term is present in the top-k documents.
 In the opposite case where the term already exists, the term counter for the current term is incremented.
-the counter for the number of times the term appears in the top-k documents are incremented by one.
+The counter for the number of times the term appears in the top-k documents are incremented by one.
 
 After looping through the photos the information about how many terms there are in the whole collection is retrieved from the search engine.
 Now all the information required to calculate the KL-score is available.
 All the keys in the hash map are now iterated through to retrieve every single term.
 In every iteration the equation \ref{eq:kl-distribution-q} is used to calculate the KL-score.
 An array is used to store objects which holds information about which term it is and the corresponding KL-score.
-Subsequently the array is sorted from high to low according to their KL-score.
+Subsequently, the array is sorted from high to low according to their KL-score.
 
-Next the expanded search terms needs to be generated.
+Next the expanded search terms need to be generated.
 A new string array is created to hold the new search terms.
 First the old search terms are added to the array,
 then the new expanded terms are added to the array.
 In this implementation a maximum of ten terms may be added to the term search.
 
 Lastly, the expanded terms are used in a new term search.
-The search engine are queried for the terms,
-and the result from the search are returned directly back to the client without any modifications.
+The search engine is queried for the terms,
+and the result from the search is returned directly back to the client without any modifications.
 
 \subsubsection{Algorithm Complexity}
 An important aspect of every algorithm is to analyze its complexity.
-The algorithm explained in \ref{sec:algorithm} have two different inputs we have to consider.
-Firstly the number of terms in top-k documents, and secondly the number of unique terms.
-This analysis only examine the algorithm itself and does not account for the time it takes to retrieve data from the search engine.
+The algorithm explained in \ref{sec:algorithm} has two different inputs we have to consider.
+Firstly, the number of terms in top-k documents, and secondly, the number of unique terms.
+This analysis only examine the algorithm itself, and does not account for the time it takes to retrieve data from the search engine.
 
 The algorithm contains a total of three loops and one sorting algorithm.
-Initially all the tags are iterated through,
+Initially, all the tags are iterated through,
 which means the size is equal to the number of tags in the top-k documents.
 The second loop is of the same size as the number of unique terms.
-This number have a best case of only one unique tag and a worst case of T unique terms.
+This number has a best case of only one unique tag and a worst case of T unique terms.
 Lastly, all the unique tags are sorted using a function inside the Java util library called \texttt{Arrays.sort()}.
 \texttt{Arrays.sort()} uses an algorithm called merge sort,
 which has a worst case of $O(n\log{}n)$.
 
 Combining all the loops described above, the algorithm complexity  given in equation \ref{eq:algorithm-complexity}.
-$T$ is the numbor of tags and $U$ is the number of unique terms.
+$T$ is the number of tags, and $U$ is the number of unique terms.
 
 \begin{cequation}[H]
 	\begin{equation}
