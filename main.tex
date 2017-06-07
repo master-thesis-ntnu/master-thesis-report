@@ -1,42 +1,37 @@
-\documentclass[a4paper, 12pt] {report}
-%\documentclass[twoside, a4paper, 12pt, openright] {report}
+%% Master Thesis Template
+%% Please update the specification through this link: https://daim.idi.ntnu.no/howto_thesis_submission.pdf
 
-\include{setup}
+\documentclass[pdftex,10pt,b5paper,twoside]{book}
+\usepackage[lmargin=25mm,rmargin=25mm,tmargin=27mm,bmargin=30mm]{geometry}
+
+\input{docsetup.tex}
 
 \begin{document}
-\include{frontpage}
-\newpage
 
-\pagenumbering{Roman}
-\glsunsetall
-\include{abstract}
-% Norwegian version of the abstract
-\include{summary}
-\newpage
+%% PART 1
+%%The title page will be automatically generated and added by the DAIM system
+%\input{dedication.tex}		%% Optional
 
-\tableofcontents
-\newpage
+%% PART 2
+\input{preface.tex}		%% Optional
+\input{summary.tex}		%% Optional
+\input{list.tex}			%% Generate TOC, list of tables, and list of figures automatically
+% \input{abbreviations.tex}	%% Optional
 
-\listoffigures
-\listoftables
-
-%\include{abbreviations}
-%\newpage
-
+% Start normal numbers on chapter 1
 \pagenumbering{arabic}
-\include{introduction}
-\include{background}
-\include{related-work}
-\include{approach}
-\include{evaluation}
-\include{conclusion}
+\setcounter{page}{1}
 
-\appendix
-\include{appendices}
+%% PART 3 -- The Chapters
+\input{introduction.tex}		%% Edit each chapter
+\input{background.tex}
+\input{related-work.tex}
+\input{approach.tex}
+\input{evaluation.tex}
+\input{conclusion.tex}
 
-\renewcommand{\bibname}{References}
-\bibliographystyle{plain}
-\bibliography{references}{}
-\nocite{*}
+%% PART 4
+\input{references.tex}	%% Edit your references in "mylib.bib"
+\input{appendix.tex}		%% Optional
+
 \end{document}
-\include{acknowledgements}

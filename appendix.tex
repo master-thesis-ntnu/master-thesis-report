@@ -1,0 +1,230 @@
+\section*{\begin{center}{\Huge Appendix}\end{center}}
+\addcontentsline{toc}{chapter}{Appendix}
+$\\[0.5cm]$
+
+\section{Elasticsearch Query}
+\begin{lstlisting}[language=json, caption={Initial query to retrive query expansion data}, label={ap:initial-query}]
+{
+    query : {
+        terms : {
+          tags : [...]
+        }
+    },
+    size: 50,
+    aggregations : {
+        terms: {
+            terms : {
+                field : "tags.keyword",
+                size: 50
+            }
+        },
+        term_count: {
+            value_count: {
+                field: "tags.keyword"
+            }
+        }
+    }
+}
+\end{lstlisting}
+
+\begin{lstlisting}[language=json, caption={Elasticsearch term search}, label={ap:final-query}]
+{
+    query : {
+        terms : {
+          tags : [...]
+        }
+    }
+}
+\end{lstlisting}
+
+\section{Flickr Data Representation in Elasticsearch}
+\begin{lstlisting}[language={json}, caption={Internal photo data representation in elasticsearch}, label={ap:flickr-data}]
+{
+    id: id,
+    title: "title",
+    description: "description",
+    tags: [
+      "blue",
+      "sky"
+    ],
+    dateuploaded: "1489805142",
+    urls: [
+      "url1",
+      "url2"
+    ]
+}
+\end{lstlisting}
+
+\section{Elasticsearch Static Mapping}
+\begin{lstlisting}[language={json}, caption={The static Elasticsearch mapping used on the photo index in the experiment setup.}, label={ap:elasticsearch-mapping}]
+{
+  "mappings": {
+     "photo": {
+        "properties": {
+           "dateuploaded": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           },
+           "description": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           },
+           "id": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           },
+           "tags": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           },
+           "title": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           },
+           "urls": {
+              "type": "text",
+              "fields": {
+                 "keyword": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                 }
+              }
+           }
+        }
+     }
+  }
+}
+\end{lstlisting}
+
+\section{Single Term Query}
+[?? add code]
+\begin{lstlisting}[language={java}, caption={Java code used to search for a single term.}, label={ap:single-term-query}]
+
+\end{lstlisting}
+
+\section{Multiple Term Query}
+\begin{lstlisting}[language={java}, caption={Java code used to search for multiple terms.}, label={ap:multiple-term-query}]
+SearchResponse searchResponse = client
+    .prepareSearch(INDEX_NAME)
+    .setQuery(QueryBuilders.termsQuery("tags", termsQuery))
+    .setSize(searchResultSize)
+    .get();
+
+return searcchResponse;
+\end{lstlisting}
+
+\section{Query to Retrieve the Number of Occurences for a Given Term}
+\begin{lstlisting}[language={java}, caption={Java code used retrieve the number of occurences for a given term in the collection.}, label={ap:number-of-occurences-query}]
+SearchResponse searchResponse = client.prepareSearch(INDEX_NAME)
+    .setQuery(QueryBuilders.termQuery("tags", term))
+    .setSize(0)
+    .get();
+
+long numberOfTimesInCollection = searchResponse
+    .getHits()
+    .getTotalHits();
+
+return numberOfTimesInCollection;
+\end{lstlisting}
+
+\section{Field Stats Query}
+\begin{lstlisting}[language={java}, caption={Java code used retrieve the total number of terms in a field in the collection.}, label={ap:field-stasts-query}]
+FieldStatsResponse fieldStatsResponse = client
+    .prepareFieldStats()
+    .setFields(FieldNames.TAGS_FIELD_NAME)
+    .get();
+
+long numberOfTermsInCollection = fieldStatsResponse
+    .getAllFieldStats()
+    .get(FieldNames.TAGS_FIELD_NAME)
+    .getSumTotalTermFreq();
+
+return numberOfTermsInCollection;
+\end{lstlisting}
+
+\section{Pseudocode}
+\label{ap:pseudocode}
+\begin{algorithm}
+  \begin{algorithmic}
+    \Require{Search terms from the user is defined as $searchTerms$} \\
+    \Return{Query expanded search terms} \\
+
+    \State $initialSearchResult \gets \Call{termsSearch}{searchTerms}$
+    \State // TermData is an object which hold term statistics such as the number of times in top-k documents
+    \State // Dictionary with the term as key and TermData as object
+    \State $termsData \gets [ ]$ \\
+    \State // Array of sorted TermData object
+    \State $sortedTerms \gets [ ]$ \\
+
+    \State $numberOfTermsInTopKDocuments$
+    \For {$photo$ in $initialSearchResult$}
+      \For {$term$ in $photo$}
+        \If {$term$} exists in $termsData$
+          \State $currentTermData \gets \Call{getTermFromDictionary}{term}$
+          \State \Call{incrementNumberOfTimesInTopKDocuments}{currentTermData}
+        \Else
+          \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+          \State \Call{insertTermsData}{$termsData$, $numberOfTimesInCollection$}
+        \EndIf
+
+        \State $numberOfTermsInTopKDocuments += 1$
+      \EndFor
+    \EndFor \\
+
+    \State $numberOfTermsInCollection \gets \Call{getNumberOfTermsInCollection}$
+    \For {$termData$ in $termsData$}
+      \State // Kl score of each term is stored within the termData object
+      \State \Call{calulateKlScore}{termData, numberOfTermsInCollection, numberOfTermsInTopKDocuments}
+      \State $\Call{insertTerm}{sortedTerms, termData}$
+    \EndFor
+
+    \State \Call{sort}{sortedTerms}
+
+    \State // Retrieve the top n search terms
+    \State $queryExpandedSearchTerms \gets \Call{getTopTerms}{sortedTerms}$
+
+  \end{algorithmic}
+  \caption{Psudocode for the query expansion with pseudo-relevance algorithm.}
+\end{algorithm}
+
+\section{ApacheBench}
+\label{ap:apache-benchmark}
+
+ApacheBench \cite{apache-benchmark} were used to measure response times.
+The bullet list below contains a description of the command at the end of this section.
+
+\begin{itemize}
+  \item \texttt{-n} defines the number of times to send a request.
+  \item \texttt{-c} defines the number of concurrent request.
+  \item \texttt{-l} is used to allow responses of different sizes
+  \item \texttt{localhost} have to be changed to the IP or domain name of the web server.
+  \item The url contains two parameters, \texttt{q} and \texttt{size}.
+  \texttt{q} is the acutal search query and \texttt{size} defines the size of the search result.
+\end{itemize}
+
+\texttt{ab -n 10000 -c 10 -l http://localhost/expansion?q=sky+blue\&size=10}
