@@ -1,6 +1,6 @@
 \section{Basic Search Engine Concepts}
 A common approach for search engines is to use \textit{term frequency} (TF) and \textit{inverse document frequency} (IDF) to calculate a document\'s relevance based on a query.
-Documents with the highest TF from a query are believed to be the most relevant.
+Documents with the highest TF from a query, are believed to be the most relevant.
 On the other hand, the most common words are removed as they do not contain information about the topic.
 TF and IDF alone is a simple model, and Elasticsearch uses a more sophisticated model.
 Elasticsearch's document scoring model is described in the following subsections.
@@ -9,7 +9,7 @@ This section describes how Elasticsearch scores its documents and is based on th
 \subsection{Term Frequency}
 Term frequency is the number of times a term is mentioned in a document.
 A document containing a term multiple times is probably more relevant than a document containing fewer occurences.
-However, in this work a term is only present one time in each document, and the reason is described in greater detail in Chapter \ref{ch:approach}.
+However, in this work a term is only present once in each document, and the reason is described in greater detail in Chapter \ref{ch:approach}.
 Term frequency calculation is given by Equation \ref{eq:term-frequency}.
 
 \begin{cequation}[H]
@@ -23,7 +23,7 @@ Term frequency calculation is given by Equation \ref{eq:term-frequency}.
 \subsection{Inverse Document Frequency}
 Inverse document frequency describes how many times a term is present in all the documents.
 Terms with high frequencies are often less relevant.
-E.g. the terms "a" and "an" often appears in a sentence but should not be given a high score even though they appear numerous times.
+E.g. the terms "a" and "an" often appear in a sentence, but should not be given a high score even though they appear numerous times.
 \begin{cequation}[H]
 	\begin{equation}
 		\mathbf{idf} = 1 + \log{[\frac{numDocs}{docFrequency + 1}]}
@@ -35,7 +35,7 @@ E.g. the terms "a" and "an" often appears in a sentence but should not be given 
 \subsection{Document Normalization}
 A title field is likely to be shorter compared to a description field.
 As a result, the description field possibly contains more instances of a given term.
-To account for longer fields document normalization is used.
+To account for longer fields, document normalization is used.
 Elasticsearch's implementation is illustrated in equation \ref{eq:normalization}.
 
 \begin{cequation}[H]
@@ -48,8 +48,8 @@ Elasticsearch's implementation is illustrated in equation \ref{eq:normalization}
 
 \subsection{Document Score}
 \label{sec:doc-score}
-After calculating term frequency, inverse document frequency and document normalization all the factors are multiplied together.
-A documents score in Elasticsearch is given by the Equation \ref{eq:document-score}.
+After calculating term frequency, inverse document frequency and document normalization, the factors are multiplied together.
+A document's score in Elasticsearch is given by the Equation \ref{eq:document-score}.
 
 \begin{cequation}[H]
 	\begin{equation}
@@ -62,40 +62,40 @@ A documents score in Elasticsearch is given by the Equation \ref{eq:document-sco
 \subsection{Vector Space Model}
 The theory presented earlier only describes how to score a single term, but user queries may contain multiple terms.
 Search engines often apply a technique called \textit{Vector Space Model} on queries with multiple terms.
-Vector space model represent the query and the document as vector.
+The vector space model represent the query and the document as vectors.
 The vector is a an array which holds term weights.
 Vector similarity is calculated between the query and the documents.
-The documents which is most similar is then returned from the search.
+The documents which are most similar is then returned from the search.
 The most common technique to calculate similarity is called cosine similarity.
 
 \subsection{Multiple Term Query}
 Elasticsearch's underlying technology Lucene,
 combines the boolean model, TF/IDF and vector space model to score queries with multiple terms against documents \footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/practical-scoring-function.html}}.
-Equation \ref{eq:scoring-function} shows how each document are scored against a multiterm query.
-Table \ref{tbl:scoring-function} explaines each variable in equation \ref{eq:scoring-function}.
+Equation \ref{eq:scoring-function} shows how each document is scored against a multiterm query.
+Table \ref{tbl:scoring-function} explains each variable in equation \ref{eq:scoring-function}.
 
 The variables \textit{queryNorm}, \textit{coord} and \textit{getBoost} are described in greater details in the following paragraphs.
 \textit{queryNorm} or \textit{query normalization factor} are used to make results from different queries comparable.
 The factor is calculated using equation \ref{eq:query-normalization-factor}.
-\textit{sumOfSquaredWeights} are determined by adding the idf value of all the terms in the query,
+\textit{sumOfSquaredWeights} is determined by adding the idf value of all the terms in the query,
 and squaring the result afterwards.
 As a result, every document will have the same query normalization factors.
 
 The \textit{coord} variable stands for \textit{coordination factor}.
-With the factor documents which contains most terms from the query will be ranked highest.
+With the factor, documents which contain most terms from the query will be ranked highest.
 Without the factor documents with more matching terms would still be ranked higher.
-However, the boost factor gives documents with more matching terms a even higher score compared to documents with less matching terms.
+However, the boost factor gives documents with more matching terms an even higher score compared to documents with less matching terms.
 For instance, a query might contain two terms, with a term weight of 3.
 If the score where calculated without the boost factor,
 documents with one matching term would recieve a score of 3 and documents with two matching terms would recieve a score of 6.
-Calculating the score with the boost factor documents with one matching terms recieves a score of $(3 \times 1)/ 2 = 1.5$,
-and documents with two matching terms would recieve a score of $(6 \times 2) / 2 = 6$.
+Calculating the score with the boost factor, documents with one matching term recieves a score of $(3 \times 1)/ 2 = 1.5$,
+and documents with two matching terms recieve a score of $(6 \times 2) / 2 = 6$.
 
 Lastly, the variable named \textit{getBoost} is used to make some field impact more on the document score,
 compared to other fields.
-In Elasticsearch there exists two different method of boosting, query time boosting and index time boosting.
+In Elasticsearch there are two different methods of boosting: query time boosting and index time boosting.
 Index time boosting means that all terms in a specified field, will recieve the boost factor during indexing.
-Query time boosting on the other hand calculates and adds the boost factor when the query is running on the Elasticsearch node.
+Query time boosting, on the other hand, calculates and adds the boost factor when the query is running on the Elasticsearch node.
 
 \begin{cequation}
 	\begin{equation}

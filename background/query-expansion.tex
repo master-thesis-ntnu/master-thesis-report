@@ -2,17 +2,17 @@
 \label{sec:query-expansion}
 
 When a user searches using the query "Super Bowl" the day after the sport event has taken place,
-it is likely that the user wants information about the event from the day before.
+it is likely that the user wants information about the event from the previous day.
 The query "Super Bowl" is likely to also return documents from previous years.
 If the search engine could be able to notice that recent documents also contains the term "2016,"
 the extra term could be added to the query.
-The new query "Super Bowl 2016" is likely to rank documents from this year's superbowl higher, as a result of the extra term.
+The new query "Super Bowl 2016" is likely to rank documents from this year's Super Bowl higher, as a result of the extra term.
 This technique is called query expansion.
 
 The idea behind query expansion is to add more terms to the user's query, and then use the extended query on the search engine.
-According to literature a query expanded search does improve the results \cite[ch. 5]{ir-book}.
+According to literature, a query expanded search does improve the results \cite[ch. 5]{ir-book}.
 Even though research shows promising results, query expansions require explicit information which in practice often is difficult to acquire.
-On the other hand, according to Efron \cite{ir-hashtag} hashtags provides an excellent way to acquire the explicit information needed for query expansion.
+On the other hand, according to Efron \cite{ir-hashtag}, hashtags provide an excellent way to acquire the explicit information needed for query expansion.
 
 There are different methods of query expansion, and this report describes one technique called Kullback-Leibler divergence.
 The implementation is described in chapter \ref{ch:approach}.
