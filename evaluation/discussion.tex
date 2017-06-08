@@ -1,23 +1,23 @@
 \section{Discussion}
 \label{sec:discussion}
-This thesis goal is to explore how advanced techniques can be used to give more relevant search results using an open source search engine,
+This thesis' goal is to explore how advanced techniques can be used to give more relevant search results using an open source search engine,
 and at the same time deliver the results fast enough to be used with interactive applications.
 The results in the previous section show that both the Elasticsearch and the Lucene implementation have a linear increase in response time,
 compared to the baseline test.
 The difference between the baseline test and the query expansion in both implementations peaked when the search result had 120-130 documents.
-When the search result size increased even further the difference decreased on both experiments.
+When the search result size increased even further, the difference decreased in both experiments.
 This shows that the implementation scales on both implementations.
 Even though the query expansion implementation is slower compared to the baseline,
 the results are well within the interactive requirement of 100 ms.
 
-Elasticsearch were chosen as the platform have proven to scale to petabytes of data \cite{elasticsearch-scale}.
+Elasticsearch was chosen as the platform has proven to scale to petabytes of data \cite{elasticsearch-scale}.
 However,
 implementing techniques like query expansion and be fast enough at the same time,
 requires the implementation to be done within Elasticsearch source code or as standalone plugins.
-Elasticsearch's official documentation \cite{elasticsearch-plugin-documentation} for developing plugins are limited.
+Elasticsearch's official documentation \cite{elasticsearch-plugin-documentation} for developing plugins is limited.
 The documentation only describes the required setup and links to other open source plugins to learn how plugins are developed.
-On Elastic's offical website there is a discussion about devoloping plugins for Elasticsearch.
-The quote below is an answer from the Elastic's Q\&A site by Elastic developer Adrien Grand on wheter there exists an offical guide on how to develop Elasticsearch plugins \cite{elasticsearch-plugin-quote}.
+On Elastic's offical website there is a discussion about developing plugins for Elasticsearch.
+The quote below is an answer from the Elastic's Q\&A site by Elastic developer Adrien Grand on wheter there is an offical guide on how to develop Elasticsearch plugins \cite{elasticsearch-plugin-quote}.
 
 \begin{quote}
   No, there is no guide about writing plugins and the API is actually quite unstable.
@@ -26,33 +26,35 @@ The quote below is an answer from the Elastic's Q\&A site by Elastic developer A
 \end{quote}
 
 The answer from Grand indicates that Elastic will not develop an official support for Elasticsearch plugins in the near future.
-Recently Elastic released a beta version of their machine learning plugin,
+Recently, Elastic released a beta version of their machine learning plugin,
 but this plugin contains closed source code and requires a license to use.
 Without more support from Elastic,
 it would become hard to continue to develop more advanced techniques to increase the relevancy of search results.
 
-The project report \cite{project-report} used aggregation to retrieve information.
-Aggregation have two important downsides,
+My project report \cite{project-report} implementation used aggregation to retrieve information.
+Aggregation has two important downsides,
 aggregations may consume a great deal of memory,
-and aggregations are approximations may not necessarily return the correct value.
+and aggregations are approximations and may not necessarily return the correct value.
 An additional remark decribed in the project report is that the aggregation might not retrieve all the terms mentioned in the top-k documents.
 With the implementation described in this thesis all terms in the top-k documents are guaranteed to be retrieved and considered in the query expansion.
-The aggregation query were needed to retrieve the number of times a term appeares in the complete collection.
-In the Elasticsearch plugin this query is replaced by a single term query,
+The aggregation query was needed to retrieve the number of times a term appeares in the complete collection.
+In the Elasticsearch plugin,
+this query is replaced by a single term query,
 which returns the exact number of hits.
-The downside of this approach beeing that the query have to be executed for each unique term in the top-k documents.
+The downside of this approach being that the query has to be executed for each unique term in the top-k documents.
 
-Both implementations have potential to become faster, by optiziming the Java code.
+Both implementations have potential of increased speed, by optiziming the Java code.
 An example of an optimization would be looking at the loops.
-Some of the loops creates new objects on each iteration instead of reusing one object.
-This may in many cases be inefficient as Java has a garbage collecter which have to clean up the old objects after each iteration.
-If the code were optimized with the garbage collector in mind the code would most likely be significant faster,
+Some of the loops create new objects on each iteration instead of reusing one object.
+This may in many cases be inefficient as Java has a garbage collecter which has to clean up the old objects after each iteration.
+If the code was optimized with the garbage collector in mind,
+the code would most likely be significantly faster,
 especially when the search result size increases and thus the loop size in the algorithm.
 Java optimizations is outside the scope of this master thesis and thus never a focus during the implementation.
 
 In Rudihagen's implementation of query expansion had a total of 4 round trips between the web server, the database and the search engine.
-In my project report I was able to reduce the round trips to two times.
-Implementing an Elasticsearch plugin were able to change the number of round trips to only one.
+In my project report, I was able to reduce the round trips to two times.
+Implementing an Elasticsearch plugin enabled me to reduce th number of round trips to one.
 Even though the same amount of work is done, all the work is done on the search engine itself.
 As a result,
 the response times are greatly improved by removing round trips and essentially removing unnecessary latency.
