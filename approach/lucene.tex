@@ -9,12 +9,12 @@ but the types used in this implementation were \texttt{StringField}, \texttt{Lon
 All the photo tags were indexed using the \texttt{TextField}.
 The two fields \texttt{TextField} and \texttt{StringField} are quite similar,
 but have some important differences.
-Listing \ref{lst:lucene-string-field} displays the \texttt{StringField} configuration code from Lucene's Github repository\footnote{\url{https://github.com/apache/lucene-solr/blob/master/lucene/core/src/java/org/apache/lucene/document/StringField.java}}.
-The first function \texttt{setIndexOptions( IndexOptions.DOCS )},
+Listing \ref{lst:lucene-string-field} displays the \texttt{StringField} configuration code from Lucene's Github repository \cite{lucene-stringfield}.
+The first function \texttt{setIndexOptions(IndexOptions.DOCS)},
 configures the inverted index to only store the documents containing the term.
 Term frequencies and vector are not stored with this option.
 \texttt{setStored( true )} tells the Lucene index to store the original value.
-Lastly, the function \texttt{setTokenized( false )} informs Lucene to store the string value as a single token.
+Lastly, the function \texttt{setTokenized(false)} informs Lucene to store the string value as a single token.
 
 \begin{lstlisting}[language=java, caption={Lucene's \texttt{StringField} index configuration.}, label={lst:lucene-string-field}]
   setStored(true);
@@ -22,7 +22,7 @@ Lastly, the function \texttt{setTokenized( false )} informs Lucene to store the 
   setIndexOptions(IndexOptions.DOCS);
 \end{lstlisting}
 
-Listing \ref{lst:lucene-text-field} shows the \texttt{TextField} configuration code from Lucene's Github repository\footnote{\url{https://github.com/apache/lucene-solr/blob/master/lucene/core/src/java/org/apache/lucene/document/StringField.java}}.
+Listing \ref{lst:lucene-text-field} shows the \texttt{TextField} configuration code from Lucene's Github repository \cite{lucene-textfield}.
 The difference between the \texttt{StringField} and the \texttt{TextField} code are line two and three.
 \texttt{setTokenized(true)} tells the Lucene analyzer emit a token for each word in the given string.
 Most important is line three which tells Lucene to store data about what documents contain a given term,

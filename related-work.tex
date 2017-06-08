@@ -1,8 +1,9 @@
 \chapter{State of the Art Survey}
 \label{ch:related-work}
 This chapter gives an overview of some of the research related to this master thesis.
-This master thesis is based on the work by Rudihagen \cite{master-thesis} and my project report \cite{project-report}.
-The first section introduces the previous work.
+The work by Rudihagen and my project is presented in the first section,
+and the last section presents other related research.
+
 
 \section{Previous Work}
 \label{sec:previous-work}
@@ -94,7 +95,7 @@ Levenshtein distance calculates the number of characters edits which are require
 Editing a string includes substitution, insertion and deletion.
 Levenshtein distance can be expanded with the method Damerau to allow character transposition.
 
-Elasticsearch uses Damerau-Levenshtein distance to calculate edit distance\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/fuzziness.html}}.
+Elasticsearch uses Damerau-Levenshtein distance to calculate edit distance \cite{elasticsearch-fuzziness}.
 The Damerau-Levenshtein distance corresponds to the number of character edits.
 A distance of 1, means one character has to be changed.
 

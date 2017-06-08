@@ -8,8 +8,8 @@ Personalization is a common approach to deliver more relevant search results.
 If a user in Trondheim search for the word \texttt{resturant},
 resturants in Trondheim are most likely more relevant compared to resturants in Oslo.
 Today an increasing number of software companies try to personalize their services.
-A few examples of personalized services are Facebook's News Feed\footnote{\url{https://newsroom.fb.com/news/category/news-feed-fyi/}},
-Netfix's movie suggestion \cite{netflix-recommendation} and Spotify's Discover Weekly\footnote{\url{https://community.spotify.com/t5/Spotify-Community-Blog/On-Track-Discover-Weekly/ba-p/1456790}}.
+A few examples of personalized services are Facebook's News Feed \cite{facebook},
+Netfix's movie suggestion \cite{netflix-recommendation} and Spotify's Discover Weekly \cite{spotify}.
 
 A second important factor for interactive tasks such as search, are speed.
 Interactive tasks have a requirement of 100 ms before the user recognizes the delay \cite{google-latency}.
@@ -25,7 +25,7 @@ It shows that speed is an important factor in search.
 
 Personalized search engines already exists.
 Google\footnote{\url{https://www.google.com}} and Bing\footnote{\url{https://www.bing.com/}}
-were the two largest search engines in 2016 according to NetMarketShare\footnote{\url{https://www.netmarketshare.com/search-engine-market-share.aspx?qprid=4&qpcustomd=0&qpstick=0&qpsp=2016&qpnp=1&qptimeframe=Y}}.
+were the two largest search engines in 2016 according to NetMarketShare \cite{search-engine-rank}.
 However, neither Google nor Bing are open source.
 
 A common approach to improve the search result is to extend the user's query with more terms,
@@ -35,7 +35,7 @@ On the other hand, tags have often been found to provide good expansion terms \c
 In this master thesis query expansion will be implemented together with a technique called pseudo-relevance.
 An important requirement for the implementation will be to deliver search results within 100 ms and that the implementation is scalable.
 
-This master thesis builds on and extends the work done by Rudihagen \cite{master-thesis} and Lund \cite{project-report}.
+This master thesis builds on and extends the work done by Rudihagen \cite{master-thesis} and my project report \cite{project-report}.
 Rudihagen researched how an instant personalized search could be achieved.
 The research achieved a personalized search which returned results of higher relevance to the user compared to TF-IDF.
 However, the results from the work showed that the implemented method did not meet the requirement of interactivity \cite{master-thesis}.
@@ -43,5 +43,5 @@ An important factor for the latency was the number of round trips between the we
 In my project report \cite{project-report}, an implementation is described which reduced the number of round trips between the web server and the search engine from four to two.
 However, the implementation may be improved even further by implementing query expansion with pseudo-relevance directly on the search engine.
 
-This master thesis will explore how the implementation described by Rudihagen and Lund can be improved even further.
+This master thesis will explore how the implementation described by Rudihagen and in my project report can be improved even further.
 The next section describes three research questions based on the motivation introduced in this section.

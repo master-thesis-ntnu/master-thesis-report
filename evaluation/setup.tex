@@ -112,7 +112,7 @@ To make the experiment simulate a real world scenario both the instances were pl
 
 \subsubsection{Elasticsearch Instance}
 The instance running Elasticsearch had the following specifications: 2 vCPUs, 10 GB memory and 20 GB SSD.
-Elasticsearch's documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/hardware.html}}
+Elasticsearch's documentation \cite{elasticsearch-hardware}
 suggests that memory will be the most important resource in most use cases.
 As a result more memory was chosen over the number of CPUs.
 An important setting in Elasticsearch is the heap size.
@@ -123,7 +123,7 @@ However, Elasticsearch's underlying structure Lucene also needs memory.
 Lucene stores the data in separate files.
 The data structure inside the files is immutable, which makes them optimized for caching.
 With this strategy Lucene optimizes the underlying operating system's eager to hold small and often used files in memory.
-According to the Elasticsearch documentation\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/guide/current/heap-sizing.html}},
+According to the Elasticsearch documentation \cite{elasticsearch-heap-size},
 the heap size should be set to 50\% or less, of the available memory.
 
 Most operating systems today also comes with swapping turned on by default.

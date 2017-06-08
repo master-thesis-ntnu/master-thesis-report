@@ -120,9 +120,11 @@
 \end{lstlisting}
 
 \section{Single Term Query}
-[?? add code]
 \begin{lstlisting}[language={java}, caption={Java code used to search for a single term.}, label={ap:single-term-query}]
-
+  SearchResponse searchResponse = client.prepareSearch(INDEX_NAME)
+    .setQuery(QueryBuilders.termQuery("tags", term))
+    .setSize(0)
+    .get();
 \end{lstlisting}
 
 \section{Multiple Term Query}

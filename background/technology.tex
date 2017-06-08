@@ -12,7 +12,7 @@ Node.JS utilizes the V8\footnote{\url{https://developers.google.com/v8/}} JavaSc
 
 \subsection{Lucene}
 Lucene\footnote{\url{https://lucene.apache.org/}} is an open-source full-text search engine library written in Java.
-According to Lucene\footnote{\url{http://lucene.apache.org/core/}} the index size is only about 20-30\% of the original text.
+According to Lucene \cite{lucene-core} the index size is only about 20-30\% of the original text.
 Lucene's search have features such as ranked search, field search and faceting, to mention a few.
 
 Lucene exposes the low level API's which give very much control over the inner workings of Lucene.
@@ -24,11 +24,11 @@ An inverted index requires more resources when indexing,
 but the data structure is effective when searching.
 The query expansion which is used in this master thesis requires information stored in the inverted index.
 
-To illustrate how the inverted index works, Lucene recieves a query for the term \texttt{blue}. [?? rewrite sentence]
+To illustrate how the inverted index works, an example query may be the term \texttt{blue}.
 Using table \ref{tbl:inverted-index} the inverted index shows that the term has a frequency of three,
 and that the term occurs in document 1, 2 and 3.
 The search result would then contain documents 1, 2 and 3.
-This is a simplified example and the exact inner workings of search engines are described in a later section.
+This is a simplified example and a more detailed description on how search engines work are found in a later section.
 
 One important drawback with Lucene is that it is not scalable across multiple machines.
 However, scalable across multiple machines are one of the advantages of using Elasticsearch.
@@ -84,15 +84,16 @@ The stored data in Elasticsearch may grow to become larger than the hardware on 
 both in size and in numbers of requests.
 To mitigate the problem Elasticsearch splits each index into multiple segments called shards.
 Each of these shards may be distributed across multiple nodes.
-This provides to higher performance when indexing new documents and when searching the documents.
+This provides higher performance when indexing new documents and when searching the documents.
 The shards may also be duplicated to support higher query volumes and availability.
+Shard duplicates are also known as replica shards.
 
 There is important distinction between an Elasticsearch index and a Lucene index.
 A Lucene index is an index which contains the inverted indices and holds all the data.
 An Elasticsearch, index on the other hand, consists of one or more shards.
 One Elasticsearch shard is the same as a Lucene index.
 
-However, when the cluster consists of multiple nodes, a query strategy is required.
+When the cluster consists of multiple nodes, a query strategy is required.
 Figure \ref{fig:elasticsearch-sharding} illustrates how an index may be distributed across three nodes.
 The figure shows a simplified view on how a query is distributed across three nodes.
 First the query arrives a coordination node.
@@ -111,7 +112,7 @@ and more work to be done when merging the results.
 \begin{figure}[h]
   \centering
   \includegraphics[width=0.9\linewidth]{img/elasticsearch-sharding.png}
-  \caption{Elasticsearch distributing query against all the shards}
+  \caption{Distributed Elasticsearch query.}
   \label{fig:elasticsearch-sharding}
 \end{figure}
 
@@ -119,8 +120,8 @@ and more work to be done when merging the results.
 As a result of Elasticsearch's distributed nature, some queries will return estimated values.
 Aggregations in Elasticsearch is an example which may return estimated values.
 
-Table \ref{tbl:shard-term-counts} has a list of words across three different shards.
-The term frequencies are listed inside the parenthesis.
+Table \ref{tbl:shard-term-counts} has a list of words across three different shards,
+with the term frequencies inside the parenthesis.
 When a client queries for the top three terms, the query is distributed to the shards.
 Each shard then returns their local top three terms.
 Given Table \ref{tbl:shard-term-counts},

@@ -26,7 +26,7 @@ and the final result are returned.
 
 \subsubsection{Elasticsearch Plugin API}
 \label{sec:elasticsearch-plugin-api}
-Elasticsearch has its own plugin API\footnote{\url{https://www.elastic.co/guide/en/elasticsearch/plugins/5.2/index.html}}.
+Elasticsearch has its own plugin API \cite{elasticsearch-plugin-api}.
 The plugin API can be used to extend Elasticsearch's index and query capabilities.
 The implementation described in this master thesis creates a plugin which extends the REST API with query expansion.
 The plugin API has two main categories: core plugins and community contributed plugins.
@@ -83,7 +83,8 @@ and the implemented Java code is available in appendix \ref{ap:multiple-term-que
 
 Retrieving the number of times a term appears in the collection may be done through Elasticsearch's count API.
 However, this API is not available through the Java client library.
-Instead this information may be fetched using a normal single term query.
+Instead this information may be fetched using a normal single term query,
+and the Java code used can by found in appendix \ref{ap:single-term-query}.
 Metadata from the search result contains the needed information.
 Listing \ref{ap:elasticsearch-metadata} displays an example on how the returned result may look.
 The array \texttt{hits} is intentionally left out to keep the example short,

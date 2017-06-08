@@ -11,7 +11,7 @@ This technique is called query expansion.
 The idea behind query expansion is to add more terms to the user's query, and then use the extended query on the search engine.
 According to literature, a query expanded search does improve the results \cite[ch. 5]{ir-book}.
 Even though research shows promising results, query expansions require explicit information which in practice often is difficult to acquire.
-In a free text search users expect to automatically recieve search results without having to answer questions or to filter the result to provide query expansion data.
+E.g. in a free text search users expect to automatically recieve search results without having to answer questions or to filter the result to provide query expansion data.
 On the other hand, according to Efron \cite{ir-hashtag}, hashtags provide an excellent way to acquire the explicit information needed for query expansion.
 
 There are different methods of query expansion, and this report describes one technique called Kullback-Leibler divergence.
@@ -65,7 +65,7 @@ To illustrate how KL score is calculated, an example for the search term "sky" i
 The expanded query may consist of up to 5 terms.
 To keep this example short, only the top 5 terms are calculated and the term "sky" is excluded from the calculations.
 
-Table \ref{tbl:kl-counts} contains information extracted using the data set described in section \ref{sec:dataset}.
+Table \ref{tbl:kl-counts} contains information extracted using the data set from my project report.
 Using equation \ref{eq:kl-divergence} and the information in table \ref{tbl:kl-counts}, the KL score for each term is calculated and is shown in table \ref{tbl:kl-score}.
 The table \ref{tbl:kl-score} lists the terms descending according to their score.
 From the original query we have the term "sky" and we may use 4 additional terms to complete the expansion.
