@@ -1,3 +1,20 @@
 \chapter*{Sammendrag}
-% This summary should be written in Norwegian
-Summary in Norwegian
+Dagens webtjenester genererer enorme datamengder.
+Brukerene av disse tjenestene forventer at søkene leverer relevante søkeresultater umiddelbart.
+En mye brukt teknikk i søkemotorer kalles term frequency-inverse document frequency(TF-IDF),
+som er i stand til å levere relevante søk fort.
+I dag inneholder enkelte tjenester så mye informasjon at det trengs mer avanserte metoder for å levere relevante søkeresultater.
+En måte å forbedre søke på er ved å utvide søket til brukeren,
+men en utfordring er å finne relevant informasjon som kan brukes i en søkeutvidelse.
+Ved å kombinere søkeutvidelse med pseudo-relevant tilbakemelding har man funnet ut at søket vil bli mer relevant.
+I tillegg til relevante søk er det viktig at søket går fort.
+Forskning gjort av Google \cite{google-marissa} viste at et halvt sekund lenger ventetid på et søkeresultat
+førte til markant mindre trafikk hos Google.
+
+Denne oppgaven undersøker hvordan søkeutvidelse kan bli implementert sammen med pseudo-relevanse
+for å levere mer relevante resultater.
+Dette i seg selv er ikke ny forskning,
+men mye av forskningen på feltet fokuserer ikke på hastighet.
+Implementasjonen beskrevet i denne oppgaven vil ha et hovedfokus på hastighet,
+og vil ha et krav om at søkeresultatene skal være tilgjengelig hos brukere innen 100 millisekunder.
+100 millisekunder forsinkelse er det øverste taket før en bruker vil oppfatte forsinkelsen.
