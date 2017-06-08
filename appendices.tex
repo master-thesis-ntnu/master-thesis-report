@@ -1,40 +1,4 @@
 \chapter{Appendix}
-
-\section{Elasticsearch Query}
-\begin{lstlisting}[language=json, caption={Initial query to retrive query expansion data}, label={ap:initial-query}]
-{
-    query : {
-        terms : {
-          tags : [...]
-        }
-    },
-    size: 50,
-    aggregations : {
-        terms: {
-            terms : {
-                field : "tags.keyword",
-                size: 50
-            }
-        },
-        term_count: {
-            value_count: {
-                field: "tags.keyword"
-            }
-        }
-    }
-}
-\end{lstlisting}
-
-\begin{lstlisting}[language=json, caption={Elasticsearch term search}, label={ap:final-query}]
-{
-    query : {
-        terms : {
-          tags : [...]
-        }
-    }
-}
-\end{lstlisting}
-
 \section{Flickr Data Representation in Elasticsearch}
 \begin{lstlisting}[language={json}, caption={Internal photo data representation in elasticsearch}, label={ap:flickr-data}]
 {
@@ -188,7 +152,7 @@ return numberOfTermsInCollection;
           \State $currentTermData \gets \Call{getTermFromDictionary}{term}$
           \State \Call{incrementNumberOfTimesInTopKDocuments}{currentTermData}
         \Else
-          \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCollection}{term}$
+          \State $numberOfTimesInCollection \gets \Call{getNumberOfTimesInCol}{term}$
           \State \Call{insertTermsData}{$termsData$, $numberOfTimesInCollection$}
         \EndIf
 
@@ -211,7 +175,7 @@ return numberOfTermsInCollection;
   \end{algorithmic}
   \caption{Psudocode for the query expansion with pseudo-relevance algorithm.}
 \end{algorithm}
-
+\newpage
 \section{ApacheBench}
 \label{ap:apache-benchmark}
 
@@ -227,4 +191,5 @@ The bullet list below contains a description of the command at the end of this s
   \texttt{q} is the acutal search query and \texttt{size} defines the size of the search result.
 \end{itemize}
 
-\texttt{ab -n 10000 -c 10 -l http://localhost/expansion?q=sky+blue\&size=10}
+\texttt{ab -n 10000 -c 10 -l http://localhost/expansion?}\\
+\texttt{q=sky+blue\&size=10}
